@@ -25,31 +25,14 @@ pre: " <b> 1.1. </b> "
 
 ### Week 1 Achievements:
 
-* Understood what AWS is and mastered the basic service groups: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
-
-* Successfully created and configured an AWS Free Tier account.
-
-* Became familiar with the AWS Management Console and learned how to find, access, and use services via the web interface.
-
-* Installed and configured AWS CLI on the computer, including:
-  * Access Key
-  * Secret Key
-  * Default Region
-  * ...
-
-* Used AWS CLI to perform basic operations such as:
-
-  * Check account & configuration information
-  * Retrieve the list of regions
-  * View EC2 service
-  * Create and manage key pairs
-  * Check information about running services
-  * ...
-
-* Acquired the ability to connect between the web interface and CLI to manage AWS resources in parallel.
-* ...
+* **Environment Initialization & Configuration:**
+  * Successfully set up an AWS Free Tier account. 
+  * Familiarized with the AWS Management Console; installed and configured the AWS CLI on a local machine to interact with AWS resources.
+* **User Administration & Security (IAM Identity Core):**
+  * Understood the distinction between the Root User and IAM Users; adhered to best practices by avoiding the use of the Root User for daily tasks. 
+  * Successfully created IAM Users, Groups, and Roles. 
+  * Enabled Multi-Factor Authentication (MFA) for the account and generated Access Keys for secure connectivity via the AWS CLI.
+* **Policy Management & Access Control (IAM Policies & Governance):**
+  * Learned to write IAM Policies (in JSON format) based on the principle of "Least Privilege." 
+  * Explored and configured advanced access control mechanisms, including Permission Boundaries and Service Control Policies (SCPs). 
+  * Gained proficiency in using the IAM Policy Simulator to test and emulate permission flows.

@@ -14,7 +14,7 @@ pre: " <b> 1.5. </b> "
 * Understand how Shaka Packager encrypts media and signals protection information in DASH/HLS outputs, then outline a small, testable DRM integration workflow for SecureLearn.
 
 ### Tasks to be carried out this week:
-| Day | Task / Activity Description | Start Date | Completion Date | Resource Link |
+| Day | Task | Start Date | Completion Date | Resource Material |
 | --- | --- | --- | --- | --- |
 | Mon | - Study the EME overview and its purpose.<br>- Distinguish EME (a browser API) from a complete DRM system or license server.<br>- Identify the roles of the web application, browser/CDM, key system, encrypted media, and license service.<br>- Note that application-level authentication and authorization are not provided automatically by EME.<br>- Output: a high-level DRM playback flow and glossary. | 12/10/2026 | 12/10/2026 | - W3C: Encrypted Media Extensions<br>- Shaka Player: DRM Configuration |
 | Tue | - Trace the EME lifecycle: requestMediaKeySystemAccess(), MediaKeys, and MediaKeySession.<br>- Understand how initialization data triggers generateRequest() and a message event.<br>- Map the license exchange: application sends the message to a service, receives a response, then passes it to session.update().<br>- Review key-status events and the difference between temporary and persistent-license sessions.<br>- Output: a sequence diagram of the browser-to-license-service exchange. | 13/10/2026 | 13/10/2026 | - W3C: Encrypted Media Extensions |
