@@ -1,9 +1,9 @@
 ---
-title: "Event 2"
+title: "Event 3"
 date: 2026-10-31
 weight: 1
 chapter: false
-pre: " <b> 4.2. </b> "
+pre: " <b> 4.3. </b> "
 ---
 
 
