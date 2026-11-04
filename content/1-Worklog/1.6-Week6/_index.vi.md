@@ -1,6 +1,6 @@
 ---
 title: "Worklog Tuần 6"
-date: 2024-01-01
+date: 2026-10-25
 weight: 1
 chapter: false
 pre: " <b> 1.6. </b> "
@@ -9,47 +9,21 @@ pre: " <b> 1.6. </b> "
 
 ### Mục tiêu tuần 6:
 
-* Kết nối, làm quen với các thành viên trong First Cloud AI Journey.
-* Hiểu dịch vụ AWS cơ bản, cách dùng console & CLI.
+* Thiết kế, chuẩn hóa và hoàn thiện toàn bộ hệ thống sơ đồ kiến trúc và luồng dữ liệu cho dự án SecureLearn.
+* Chi tiết hóa hạ tầng serverless lai (hybrid serverless) giữa AWS và Cloudflare, đảm bảo tính minh bạch trong xử lý media, kiểm soát truy cập và phát hiện bất thường bằng AI.
 
 ### Các công việc cần triển khai trong tuần này:
-| Thứ | Công việc                                                                                                                                                                                   | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu                            |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | --------------- | ----------------------------------------- |
-| 2   | - Làm quen với các thành viên FCAJ <br> - Đọc và lưu ý các nội quy, quy định tại đơn vị thực tập                                                                                             | 11/08/2025   | 11/08/2025      |
-| 3   | - Tìm hiểu AWS và các loại dịch vụ <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                            | 12/08/2025   | 12/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Tạo AWS Free Tier account <br> - Tìm hiểu AWS Console & AWS CLI <br> - **Thực hành:** <br>&emsp; + Tạo AWS account <br>&emsp; + Cài AWS CLI & cấu hình <br> &emsp; + Cách sử dụng AWS CLI | 13/08/2025   | 13/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Tìm hiểu EC2 cơ bản: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - Các cách remote SSH vào EC2 <br> - Tìm hiểu Elastic IP   <br>                  | 14/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Thực hành:** <br>&emsp; + Tạo EC2 instance <br>&emsp; + Kết nối SSH <br>&emsp; + Gắn EBS volume                                                                                         | 15/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-
+| Ngày | Công việc thực hiện                                                                                                                                                                                    | Ngày bắt đầu | Ngày hoàn thành | Tài liệu tham khảo                        |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | --------------- | ----------------------------------------- |
+| 2   | - Nghiên cứu và thiết kế sơ đồ Kiến trúc Tổng thể (General Architecture) <br> - Xác định ranh giới tích hợp giữa lớp biên Cloudflare Edge Compute và đám mây AWS                         | 19/10/2026 | 19/10/2026      |                                           |
+| 3   | - Thiết kế Luồng Tải lên & Xử lý Media (`datatransfer.png`) <br>&emsp; + Người dùng upload qua Cloudflare Pages <br>&emsp; + API Gateway & Lambda Upload Handler <br>&emsp; + R2 storage & chuyển mã MediaConvert | 20/10/2026 | 20/10/2026      |                                           |
+| 4   | - Thiết kế Luồng Phát lại & Kiểm soát truy cập (`playback.png`) <br>&emsp; + Xác thực Cognito & kiểm tra JWT <br>&emsp; + Kiểm tra quyền hạn trong DynamoDB <br>&emsp; + Tạo Signed Token bằng Cloudflare Workers | 21/10/2026 | 21/10/2026      |                                           |
+| 5   | - Thiết kế Nhánh Phát hiện Bất thường bằng AI (`AI.png`) <br>&emsp; + Trigger định kỳ qua EventBridge <br>&emsp; + Phân tích log bằng Isolation Forest Lambda <br>&emsp; + Cảnh báo tự động qua Amazon SNS    | 22/10/2026 | 22/10/2026      |                                           |
+| 6   | - **Kiểm tra & Hoàn thiện:** <br>&emsp; + Chuẩn hóa toàn bộ sơ đồ kiến trúc (`general.jpg`, `datatransfer.jpg`, `playback.jpg`, `AI.png`) <br>&emsp; + Tích hợp sơ đồ vào tài liệu dự án             | 23/10/2026 | 23/10/2026      |                                           |
 
 ### Kết quả đạt được tuần 6:
-* Hiểu AWS là gì và nắm được các nhóm dịch vụ cơ bản: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
 
-* Đã tạo và cấu hình AWS Free Tier account thành công.
-
-* Làm quen với AWS Management Console và biết cách tìm, truy cập, sử dụng dịch vụ từ giao diện web.
-
-* Cài đặt và cấu hình AWS CLI trên máy tính bao gồm:
-  * Access Key
-  * Secret Key
-  * Region mặc định
-  * ...
-
-* Sử dụng AWS CLI để thực hiện các thao tác cơ bản như:
-
-  * Kiểm tra thông tin tài khoản & cấu hình
-  * Lấy danh sách region
-  * Xem dịch vụ EC2
-  * Tạo và quản lý key pair
-  * Kiểm tra thông tin dịch vụ đang chạy
-  * ...
-
-* Có khả năng kết nối giữa giao diện web và CLI để quản lý tài nguyên AWS song song.
-* ...
-
-
+* Thiết kế và chuẩn hóa thành công toàn bộ hệ thống sơ đồ kiến trúc serverless lai cho dự án SecureLearn, kết nối mượt mà giữa khái niệm bảo mật cấp cao và luồng thực thi thực tế.
+* Xây dựng chi tiết luồng tiếp nhận video từ đầu đến cuối, mô tả quá trình tải lên từ Cloudflare Pages thông qua API Gateway, Lambda, kho lưu trữ R2 riêng tư và tự động hóa chuyển mã qua MediaConvert.
+* Hoàn thiện cấu trúc luồng phát video an toàn và cấp phép, tích hợp xác thực Amazon Cognito, kiểm tra JWT, xác thực quyền hạn trong DynamoDB và sinh Signed URL từ Cloudflare Workers.
+* Thiết lập sơ đồ đường ống giám sát AI tự động, mô tả cách EventBridge kích hoạt hàm Lambda chạy mô hình Isolation Forest để phân tích log CloudWatch và phát cảnh báo qua Amazon SNS.
