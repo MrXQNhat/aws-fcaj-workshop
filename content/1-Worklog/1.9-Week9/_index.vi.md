@@ -1,59 +1,31 @@
 ---
 title: "Worklog Tuần 9"
-date: 2024-01-01
+date: 2026-11-15
 weight: 1
 chapter: false
 pre: " <b> 1.9. </b> "
 ---
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
+
 
 
 ### Mục tiêu tuần 9:
 
-* Kết nối, làm quen với các thành viên trong First Cloud AI Journey.
-* Hiểu dịch vụ AWS cơ bản, cách dùng console & CLI.
+* Biết các nguyên tắc cốt lõi về bảo mật đám mây, Mô hình Trách nhiệm Chia sẻ và các vector đe dọa phổ biến.
+* Nhận diện và khai thác các lỗi cấu hình sai trong Quản lý Định danh và Truy cập (IAM).
 
 ### Các công việc cần triển khai trong tuần này:
-| Thứ | Công việc                                                                                                                                                                                   | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu                            |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | --------------- | ----------------------------------------- |
-| 2   | - Làm quen với các thành viên FCAJ <br> - Đọc và lưu ý các nội quy, quy định tại đơn vị thực tập                                                                                             | 11/08/2025   | 11/08/2025      |
-| 3   | - Tìm hiểu AWS và các loại dịch vụ <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                            | 12/08/2025   | 12/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Tạo AWS Free Tier account <br> - Tìm hiểu AWS Console & AWS CLI <br> - **Thực hành:** <br>&emsp; + Tạo AWS account <br>&emsp; + Cài AWS CLI & cấu hình <br> &emsp; + Cách sử dụng AWS CLI | 13/08/2025   | 13/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Tìm hiểu EC2 cơ bản: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - Các cách remote SSH vào EC2 <br> - Tìm hiểu Elastic IP   <br>                  | 14/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Thực hành:** <br>&emsp; + Tạo EC2 instance <br>&emsp; + Kết nối SSH <br>&emsp; + Gắn EBS volume                                                                                         | 15/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-
+| Ngày | Công việc                                                                                                                                                                                     | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu                        |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | --------------- | ----------------------------------------- |
+| 2   | - Nghiên cứu Mô hình Trách nhiệm Chia sẻ bảo mật Cloud <br> - Phân tích các lỗi cấu hình sai phổ biến và đường đi leo thang đặc quyền                                                                  | 16/11/2026 | 16/11/2026      | <https://aws.amazon.com/compliance/shared-responsibility-model/> |
+| 3   | - Kiểm toán bảo mật AWS IAM <br>&emsp; + Phân tích các chính sách IAM cấp quyền quá mức <br>&emsp; + Nhận diện quyền wildcard nguy hiểm (`*`) <br>&emsp; + Sử dụng công cụ tự động đánh giá IAM          | 17/11/2026 | 17/11/2026      | <https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html> |
+| 4   | - Mô phỏng Lab Leo thang Đặc quyền (Privilege Escalation) <br>&emsp; + Khai thác quyền `iam:CreateAccessKey` và `iam:PutUserPolicy` <br>&emsp; + Mô phỏng giả lập tấn công chỉnh sửa policy và assume-role | 18/11/2026 | 18/11/2026      | <https://rhinosecuritylabs.com/aws/aws-privilege-escalation-methods-mitigation/> |
+| 5   | - Trinh sát & Khảo sát Hạ tầng Cloud (Reconnaissance) <br>&emsp; + Liệt kê tài nguyên cloud sử dụng Pacu và ScoutSuite <br>&emsp; + Lập bản đồ bề mặt tấn công và nhận diện role quản trị bị lộ             | 19/11/2026 | 19/11/2026      | <https://github.com/RhinoSecurityLabs/pacu> |
+| 6   | - Khắc phục và Tăng cường bảo mật (Remediation) <br>&emsp; + Áp dụng nguyên tắc Đặc quyền tối thiểu (Least Privilege) vào chính sách IAM <br>&emsp; + Cấu hình AWS Organizations và Service Control Policies (SCPs) | 20/11/2026 | 20/11/2026      | <https://aws.amazon.com/architecture/well-architected/> |
 
 ### Kết quả đạt được tuần 9:
 
-* Hiểu AWS là gì và nắm được các nhóm dịch vụ cơ bản: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
-
-* Đã tạo và cấu hình AWS Free Tier account thành công.
-
-* Làm quen với AWS Management Console và biết cách tìm, truy cập, sử dụng dịch vụ từ giao diện web.
-
-* Cài đặt và cấu hình AWS CLI trên máy tính bao gồm:
-  * Access Key
-  * Secret Key
-  * Region mặc định
-  * ...
-
-* Sử dụng AWS CLI để thực hiện các thao tác cơ bản như:
-
-  * Kiểm tra thông tin tài khoản & cấu hình
-  * Lấy danh sách region
-  * Xem dịch vụ EC2
-  * Tạo và quản lý key pair
-  * Kiểm tra thông tin dịch vụ đang chạy
-  * ...
-
-* Có khả năng kết nối giữa giao diện web và CLI để quản lý tài nguyên AWS song song.
-* ...
-
-
+* Hiểu sâu sắc về bức tranh đe dọa trên đám mây và ranh giới trách nhiệm bảo mật giữa nhà cung cấp dịch vụ và khách hàng.
+* Nhận diện và phân tích thành công các lỗi cấu hình sai chính sách IAM nguy hiểm có thể dẫn đến chiếm đoạt toàn bộ tài khoản.
+* Thực hiện thành công các cuộc tấn công leo thang đặc quyền trong môi trường lab, minh họa cách kẻ tấn công vượt qua ranh giới phân quyền yếu kém.
+* Sử dụng thành thạo các công cụ kiểm thử xâm nhập đám mây chuyên dụng như Pacu và ScoutSuite để trinh sát tài nguyên tự động.
+* Áp dụng các chiến lược khắc phục thi hành nguyên tắc Đặc quyền tối thiểu và triển khai Chính sách Kiểm soát Dịch vụ bảo vệ.

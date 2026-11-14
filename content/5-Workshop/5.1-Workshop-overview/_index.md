@@ -1,18 +1,21 @@
 ---
-title : "Introduction"
-date : 2024-01-01 
-weight : 1 
-chapter : false
-pre : " <b> 5.1. </b> "
+title: "Workshop Overview"
+date: 2026-11-01
+weight: 1
+chapter: false
+pre: " <b> 5.1. </b> "
 ---
 
-#### VPC endpoints
-+ **VPC endpoints** are virtual devices. They are horizontally scaled, redundant, and highly available VPC components. They allow communication between your compute resources and AWS services without imposing availability risks.
-+ Compute resources running in VPC can access  **Amazon S3**  using a Gateway endpoint. PrivateLink interface endpoints can be used by compute resources running in VPC or on-premises.
+### 1. Problem Statement & Solution Overview
+Small and medium-sized educational centers (SMEs) face severe intellectual property leakage when lecture videos are downloaded, screen-recorded, and redistributed illegally. Commercial DRM solutions (Widevine, PlayReady) carry prohibitive licensing fees and integration complexity.
 
-#### Workshop overview
-In this workshop, you will use two VPCs. 
-+ **"VPC Cloud"** is for cloud resources such as a  **Gateway endpoint** and an EC2 instance to test with. 
-+ **"VPC On-Prem"** simulates an on-premises environment such as a factory or corporate datacenter. An EC2 instance running strongSwan VPN software has been deployed in "VPC On-prem" and automatically configured to establish a Site-to-Site VPN tunnel with AWS Transit Gateway. This VPN simulates connectivity from an on-premises location to the AWS cloud. To minimize costs, only one VPN instance is provisioned to support this workshop. When planning VPN connectivity for your production workloads, AWS recommends using multiple VPN devices for high availability.
+**SecureLearn** solves this using an AWS–Cloudflare Hybrid Serverless architecture:
+* **Media Pipeline:** Videos uploaded to Cloudflare R2 trigger Cloudflare Queues and Consumer Workers to coordinate transcoding via **AWS Elemental MediaConvert** into HLS/DASH formats.
+* **Delivery & Access Control:** Students authenticate via **Amazon Cognito** (JWT). **AWS Lambda** verifies course entitlements in **Amazon DynamoDB** and issues a short-lived HMAC-SHA256 signed playback token (1-hour TTL), validated at the edge by **Cloudflare Workers**.
+* **Security & Key Management:** **AWS KMS** and **AWS Secrets Manager** protect API credentials, while **AWS CloudTrail** logs all audit events.
+* **AI & Leak Tracing:** **AWS EventBridge** triggers an **Isolation Forest** Lambda function every 5 minutes to detect abnormal access patterns and send alerts via **Amazon SNS**, paired with a JavaScript dynamic watermark displaying the student's User ID and IP.
 
-![overview](/images/5-Workshop/5.1-Workshop-overview/diagram1.png)
+### 2. Architecture Diagrams
+
+![General Architecture](/content/2-Proposal/general.png)
+

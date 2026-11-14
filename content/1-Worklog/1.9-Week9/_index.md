@@ -1,57 +1,30 @@
 ---
 title: "Week 9 Worklog"
-date: 2024-01-01
+date: 2026-11-15
 weight: 1
 chapter: false
 pre: " <b> 1.9. </b> "
 ---
-{{% notice warning %}} 
-⚠️ **Note:** The following information is for reference purposes only. Please **do not copy verbatim** for your own report, including this warning.
-{{% /notice %}}
+
 
 
 ### Week 9 Objectives:
 
-* Connect and get acquainted with members of First Cloud AI Journey.
-* Understand basic AWS services, how to use the console & CLI.
-
+* Understand core cloud security principles, the Shared Responsibility Model, and common cloud threat vectors.
+* Identifying and exploiting Identity and Access Management (IAM) misconfigurations in cloud environments.
 ### Tasks to be carried out this week:
 | Day | Task                                                                                                                                                                                                   | Start Date | Completion Date | Reference Material                        |
 | --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | --------------- | ----------------------------------------- |
-| 2   | - Get acquainted with FCAJ members <br> - Read and take note of internship unit rules and regulations                                                                                                   | 08/11/2025 | 08/11/2025      |
-| 3   | - Learn about AWS and its types of services <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                              | 08/12/2025 | 08/12/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Create AWS Free Tier account <br> - Learn about AWS Console & AWS CLI <br> - **Practice:** <br>&emsp; + Create AWS account <br>&emsp; + Install & configure AWS CLI <br> &emsp; + How to use AWS CLI | 08/13/2025 | 08/13/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Learn basic EC2: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - SSH connection methods to EC2 <br> - Learn about Elastic IP   <br>                            | 08/14/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Practice:** <br>&emsp; + Launch an EC2 instance <br>&emsp; + Connect via SSH <br>&emsp; + Attach an EBS volume                                                                                     | 08/15/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
-
+| 2   | - Study Cloud Security Shared Responsibility Model <br> - Analyze common cloud misconfigurations and privilege escalation paths                                                                         | 09/11/2026 | 09/11/2026      | <https://aws.amazon.com/compliance/shared-responsibility-model/> |
+| 3   | - AWS IAM Security Auditing <br>&emsp; + Analyze overly permissive IAM policies <br>&emsp; + Identify dangerous wildcard permissions (`*`) <br>&emsp; + Use automated tools for IAM assessment          | 10/11/2026 | 10/11/2026      | <https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html> |
+| 4   | - Privilege Escalation Lab Simulation <br>&emsp; + Exploit `iam:CreateAccessKey` and `iam:PutUserPolicy` <br>&emsp; + Simulate policy tampering and assume-role attacks                                 | 11/11/2026 | 11/11/2026      | <https://rhinosecuritylabs.com/aws/aws-privilege-escalation-methods-mitigation/> |
+| 5   | - Cloud Reconnaissance & Enumeration <br>&emsp; + Enumerate cloud assets using Pacu and ScoutSuite <br>&emsp; + Map cloud attack surfaces and identify exposed administrative roles                      | 12/11/2026 | 12/11/2026      | <https://github.com/RhinoSecurityLabs/pacu> |
+| 6   | - Remediation and Hardening <br>&emsp; + Implement Least Privilege principle in IAM policies <br>&emsp; + Configure AWS Organizations and Service Control Policies (SCPs)                              | 13/11/2026 | 13/11/2026      | <https://aws.amazon.com/architecture/well-architected/> |
 
 ### Week 9 Achievements:
 
-* Understood what AWS is and mastered the basic service groups: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
-
-* Successfully created and configured an AWS Free Tier account.
-
-* Became familiar with the AWS Management Console and learned how to find, access, and use services via the web interface.
-
-* Installed and configured AWS CLI on the computer, including:
-  * Access Key
-  * Secret Key
-  * Default Region
-  * ...
-
-* Used AWS CLI to perform basic operations such as:
-
-  * Check account & configuration information
-  * Retrieve the list of regions
-  * View EC2 service
-  * Create and manage key pairs
-  * Check information about running services
-  * ...
-
-* Acquired the ability to connect between the web interface and CLI to manage AWS resources in parallel.
-* ...
+* Gained deep insights into cloud threat landscapes and the division of security responsibilities between cloud providers and customers.
+* Successfully identified and analyzed dangerous IAM policy misconfigurations that lead to full account compromise.
+* Conducted practical privilege escalation attacks in a lab environment, demonstrating how attackers bypass weak permission boundaries.
+* Utilized specialized cloud penetration testing tools like Pacu and ScoutSuite to perform automated asset reconnaissance.
+* Applied remediation strategies enforcing the Principle of Least Privilege and deploying protective Service Control Policies.

@@ -1,58 +1,30 @@
 ---
 title: "Worklog Tuần 12"
-date: 2024-01-01
+date: 2026-12-06
 weight: 2
 chapter: false
 pre: " <b> 1.12 </b> "
 ---
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
+
 
 ### Mục tiêu tuần 12:
 
-* Kết nối, làm quen với các thành viên trong First Cloud AI Journey.
-* Hiểu dịch vụ AWS cơ bản, cách dùng console & CLI.
+* Nắm vững các nguyên tắc cơ bản về bảo mật container, kỹ thuật thoát khỏi container và tăng cường bảo mật runtime.
+* Khám phá bảo mật kiến trúc cụm Kubernetes (K8s), các lỗi cấu hình sai RBAC và phương pháp thoát khỏi pod.
 
 ### Các công việc cần triển khai trong tuần này:
-| Thứ | Công việc                                                                                                                                                                                   | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu                            |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | --------------- | ----------------------------------------- |
-| 2   | - Làm quen với các thành viên FCAJ <br> - Đọc và lưu ý các nội quy, quy định tại đơn vị thực tập                                                                                             | 11/08/2025   | 11/08/2025      |
-| 3   | - Tìm hiểu AWS và các loại dịch vụ <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                            | 12/08/2025   | 12/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Tạo AWS Free Tier account <br> - Tìm hiểu AWS Console & AWS CLI <br> - **Thực hành:** <br>&emsp; + Tạo AWS account <br>&emsp; + Cài AWS CLI & cấu hình <br> &emsp; + Cách sử dụng AWS CLI | 13/08/2025   | 13/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Tìm hiểu EC2 cơ bản: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - Các cách remote SSH vào EC2 <br> - Tìm hiểu Elastic IP   <br>                  | 14/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Thực hành:** <br>&emsp; + Tạo EC2 instance <br>&emsp; + Kết nối SSH <br>&emsp; + Gắn EBS volume                                                                                         | 15/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-
+| Ngày | Công việc                                                                                                                                                                                     | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu                        |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | --------------- | ----------------------------------------- |
+| 2   | - Bảo mật Docker & Thoát khỏi Container (Escape) <br>&emsp; + Phân tích rủi ro lộ Docker socket <br>&emsp; + Mô phỏng thoát khỏi container qua privileged container                                   | 30/11/2026 | 30/11/2026      | <https://www.cisecurity.org/benchmark/docker> |
+| 3   | - Bảo mật Kiến trúc Cụm Kubernetes <br>&emsp; + Khám phá thành phần K8s control plane và bảo mật API server <br>&emsp; + Kiểm toán quyền Kiểm soát Truy cập Dựa trên Vai trò (RBAC)                     | 01/12/2026 | 01/12/2026      | <https://kubernetes.io/docs/concepts/security/> |
+| 4   | - Khai thác Cấu hình sai Kubernetes <br>&emsp; + Khai thác các role RBAC và service account cấp quyền quá mức <br>&emsp; + Lạm dụng xác thực ẩn danh và K8s dashboard không an toàn         | 02/12/2026 | 02/12/2026      | <https://book.hacktricks.xyz/pentesting-cloud/kubernetes-security-pentesting> |
+| 5   | - Pod Breakout & Di chuyển Ngang (Lateral Movement) <br>&emsp; + Thực hiện kỹ thuật pod breakout (lạm dụng host network/PID namespace) <br>&emsp; + Đánh cắp secret từ etcd hoặc các object secret của K8s | 03/12/2026 | 03/12/2026      | <https://falco.org/>                      |
+| 6   | - Tăng cường Bảo mật & Phòng thủ Kubernetes <br>&emsp; + Triển khai Pod Security Standards (PSS) và Network Policies <br>&emsp; + Thiết lập admission controller và giám sát runtime security (Falco)  | 04/12/2026 | 04/12/2026      | <https://www.nsa.gov/Press-Room/News-Highlights/Article/Article/2716980/nsa-cisa-release-kubernetes-hardening-guidance/> |
 
 ### Kết quả đạt được tuần 12:
 
-* Hiểu AWS là gì và nắm được các nhóm dịch vụ cơ bản: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
-
-* Đã tạo và cấu hình AWS Free Tier account thành công.
-
-* Làm quen với AWS Management Console và biết cách tìm, truy cập, sử dụng dịch vụ từ giao diện web.
-
-* Cài đặt và cấu hình AWS CLI trên máy tính bao gồm:
-  * Access Key
-  * Secret Key
-  * Region mặc định
-  * ...
-
-* Sử dụng AWS CLI để thực hiện các thao tác cơ bản như:
-
-  * Kiểm tra thông tin tài khoản & cấu hình
-  * Lấy danh sách region
-  * Xem dịch vụ EC2
-  * Tạo và quản lý key pair
-  * Kiểm tra thông tin dịch vụ đang chạy
-  * ...
-
-* Có khả năng kết nối giữa giao diện web và CLI để quản lý tài nguyên AWS song song.
-* ...
-
-
+* Đạt được kiến thức toàn diện về ranh giới cách ly container và các lỗi cấu hình Docker phổ biến cho phép thoát container ra host.
+* Đánh giá trạng thái bảo mật cụm Kubernetes bằng cách kiểm toán cấu hình RBAC và nhận diện các service account bị lạm dụng quyền.
+* Thực thi các cuộc tấn công mô phỏng trên Kubernetes, bao gồm khai thác endpoint API bị lộ và lạm dụng thông số cấu hình pod kém an toàn.
+* Thực hành các kỹ thuật pod breakout nâng cao như thao tác namespace và lợi dụng việc mount volume nhạy cảm.
+* Triển khai các giải pháp tăng cường bảo mật container bao gồm Pod Security Standards, Network Policies và giám sát thời gian thực với Falco.

@@ -1,32 +1,23 @@
 ---
-title : "Clean up"
-date : 2024-01-01
-weight : 6
-chapter : false
-pre : " <b> 5.6. </b> "
+title: "Clean Up Resources"
+date: 2026-03-01
+weight: 6
+chapter: false
+pre: " <b> 5.6. </b> "
 ---
-Congratulations on completing this workshop! 
-In this workshop, you learned architecture patterns for accessing Amazon S3 without using the Public Internet. 
-+ By creating a gateway endpoint, you enabled direct communication between EC2 resources and Amazon S3, without traversing an Internet Gateway. 
-+ By creating an interface endpoint you extended S3 connectivity to resources running in your on-premises data center via AWS Site-to-Site VPN or Direct Connect. 
 
-#### clean up
-1. Navigate to Hosted Zones on the left side of Route 53 console. Click the name of *s3.us-east-1.amazonaws.com* zone. Click Delete and confirm deletion by typing delete. 
+After completing the workshop and recording your demonstration, clean up all provisioned resources to avoid unexpected charges.
 
-![hosted zone](/images/5-Workshop/5.6-Cleanup/delete-zone.png)
+### 1. Clean Up AWS Resources
+1. **Amazon EventBridge:** Delete the `SecureLearn-AI-Scan-Schedule` rule/schedule.
+2. **AWS Lambda:** Delete `SecureLearn-LicenseService`, `SecureLearn-AnomalyDetection`, and any associated Lambda Layers.
+3. **Amazon API Gateway:** Delete `SecureLearn-API`.
+4. **Amazon Cognito:** Delete the `SecureLearnUserPool` user pool.
+5. **Amazon DynamoDB & SNS:** Delete the entitlement/log tables and the `SecureLearn-AnomalyAlerts` SNS topic.
+6. **AWS Secrets Manager & KMS:** Delete the `SecureLearn/CloudflareCredentials` secret and schedule deletion for `SecureLearn-Key` (minimum 7-day waiting period).
+7. **Amazon CloudWatch:** Manually delete remaining CloudWatch Log Groups created by Lambda and API Gateway.
 
-2. Disassociate the Route 53 Resolver Rule - myS3Rule from "VPC Onprem" and Delete it. 
-
-![hosted zone](/images/5-Workshop/5.6-Cleanup/vpc.png)
-
-4. Open the CloudFormation console  and delete the two CloudFormation Stacks that you created for this lab:
-+ PLOnpremSetup
-+ PLCloudSetup
-
-![delete stack](/images/5-Workshop/5.6-Cleanup/delete-stack.png)
-
-5. Delete S3 buckets
-+ Open S3 console
-+ Choose the bucket we created for the lab, click and confirm empty. Click delete and confirm delete.
-
-![delete s3](/images/5-Workshop/5.6-Cleanup/delete-s3.png)
+### 2. Clean Up Cloudflare Resources
+1. **Cloudflare R2:** Delete all uploaded source videos, transcoded HLS/DASH segments, and the `.pkl` model file inside your R2 buckets, then delete the buckets.
+2. **Cloudflare Workers & Queues:** Delete `SecureLearn-EdgeAuth`, `SecureLearn-UploadConsumer`, and the `securelearn-video-uploads` queue.
+3. **Cloudflare Zero Trust:** Remove the `SecureLearn Admin Portal` Access application and policy.

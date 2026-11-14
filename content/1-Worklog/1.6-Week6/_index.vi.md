@@ -13,7 +13,7 @@ pre: " <b> 1.6. </b> "
 * Chi tiết hóa hạ tầng serverless lai (hybrid serverless) giữa AWS và Cloudflare, đảm bảo tính minh bạch trong xử lý media, kiểm soát truy cập và phát hiện bất thường bằng AI.
 
 ### Các công việc cần triển khai trong tuần này:
-| Ngày | Công việc thực hiện                                                                                                                                                                                    | Ngày bắt đầu | Ngày hoàn thành | Tài liệu tham khảo                        |
+| Ngày | Công việc thực hiện                                                                                                                                                                                    | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu                        |
 | --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | --------------- | ----------------------------------------- |
 | 2   | - Nghiên cứu và thiết kế sơ đồ Kiến trúc Tổng thể (General Architecture) <br> - Xác định ranh giới tích hợp giữa lớp biên Cloudflare Edge Compute và đám mây AWS                         | 19/10/2026 | 19/10/2026      |                                           |
 | 3   | - Thiết kế Luồng Tải lên & Xử lý Media (`datatransfer.png`) <br>&emsp; + Người dùng upload qua Cloudflare Pages <br>&emsp; + API Gateway & Lambda Upload Handler <br>&emsp; + R2 storage & chuyển mã MediaConvert | 20/10/2026 | 20/10/2026      |                                           |

@@ -1,57 +1,31 @@
 ---
 title: "Week 7 Worklog"
-date: 2024-01-01
+date: 2026-10-01
 weight: 1
 chapter: false
 pre: " <b> 1.7. </b> "
 ---
-{{% notice warning %}} 
-⚠️ **Note:** The following information is for reference purposes only. Please **do not copy verbatim** for your own report, including this warning.
-{{% /notice %}}
+
 
 
 ### Week 7 Objectives:
 
-* Connect and get acquainted with members of First Cloud AI Journey.
-* Understand basic AWS services, how to use the console & CLI.
+* Understand the architecture and deployment workflow of a Serverless Document Management System (DMS) on AWS.
+* Master building DynamoDB tables, writing Lambda functions, configuring API Gateway, integrating the React front-end, and deploying applications using AWS SAM.
 
 ### Tasks to be carried out this week:
 | Day | Task                                                                                                                                                                                                   | Start Date | Completion Date | Reference Material                        |
 | --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | --------------- | ----------------------------------------- |
-| 2   | - Get acquainted with FCAJ members <br> - Read and take note of internship unit rules and regulations                                                                                                   | 08/11/2025 | 08/11/2025      |
-| 3   | - Learn about AWS and its types of services <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                              | 08/12/2025 | 08/12/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Create AWS Free Tier account <br> - Learn about AWS Console & AWS CLI <br> - **Practice:** <br>&emsp; + Create AWS account <br>&emsp; + Install & configure AWS CLI <br> &emsp; + How to use AWS CLI | 08/13/2025 | 08/13/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Learn basic EC2: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - SSH connection methods to EC2 <br> - Learn about Elastic IP   <br>                            | 08/14/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Practice:** <br>&emsp; + Launch an EC2 instance <br>&emsp; + Connect via SSH <br>&emsp; + Attach an EBS volume                                                                                     | 08/15/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
-
+| 2   | - Explore Serverless Document Management System (DMS) architecture <br> - Create and configure DynamoDB tables for file metadata storage                                                               | 26/10/2026 | 26/10/2026      | <https://000133.awsfcaj.com/>             |
+| 3   | - Write and deploy document management Lambda functions <br>&emsp; + Create listing function <br>&emsp; + Create upload function <br>&emsp; + Create delete function                                   | 27/10/2026 | 27/10/2026      | <https://000133.awsfcaj.com/>             |
+| 4   | - Configure Amazon API Gateway <br>&emsp; + Create API methods <br>&emsp; + Enable CORS settings <br>&emsp; + Test APIs using Postman                                                                   | 28/10/2026 | 28/10/2026      | <https://000079.awsfcaj.com/>             |
+| 5   | - Build and deploy Front-end calling API Gateway <br>&emsp; + Deploy React Front-end application <br>&emsp; + Test API integration with Front-end                                                       | 29/10/2026 | 29/10/2026      | <https://000079.awsfcaj.com/>             |
+| 6   | - Deploy application with AWS SAM <br>&emsp; + Overview of AWS Serverless Application Model <br>&emsp; + Build and deploy stack using SAM CLI <br>&emsp; + Resource cleanup                            | 30/10/2026 | 30/10/2026      | <https://000136.awsfcaj.com/>             |
 
 ### Week 7 Achievements:
 
-* Understood what AWS is and mastered the basic service groups: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
-
-* Successfully created and configured an AWS Free Tier account.
-
-* Became familiar with the AWS Management Console and learned how to find, access, and use services via the web interface.
-
-* Installed and configured AWS CLI on the computer, including:
-  * Access Key
-  * Secret Key
-  * Default Region
-  * ...
-
-* Used AWS CLI to perform basic operations such as:
-
-  * Check account & configuration information
-  * Retrieve the list of regions
-  * View EC2 service
-  * Create and manage key pairs
-  * Check information about running services
-  * ...
-
-* Acquired the ability to connect between the web interface and CLI to manage AWS resources in parallel.
-* ...
+* Gained a solid understanding of the comprehensive Serverless architecture for Document Management Systems using AWS Lambda, DynamoDB, and S3.
+* Successfully created DynamoDB tables and implemented Lambda functions to handle document listing, uploading, and deleting operations.
+* Configured API Gateway endpoints, enabled CORS, and thoroughly tested APIs using Postman.
+* Integrated the React Front-end interface to communicate smoothly with backend APIs.
+* Utilized AWS SAM (Serverless Application Model) to describe, package, and deploy the entire serverless application stack through concise YAML configuration.

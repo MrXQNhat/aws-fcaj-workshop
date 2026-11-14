@@ -1,57 +1,31 @@
 ---
 title: "Week 8 Worklog"
-date: 2024-01-01
+date: 2026-11-08
 weight: 1
 chapter: false
 pre: " <b> 1.8. </b> "
 ---
-{{% notice warning %}} 
-⚠️ **Note:** The following information is for reference purposes only. Please **do not copy verbatim** for your own report, including this warning.
-{{% /notice %}}
 
 
 ### Week 8 Objectives:
 
-* Connect and get acquainted with members of First Cloud AI Journey.
-* Understand basic AWS services, how to use the console & CLI.
+* Understand the architecture and deployment of message-driven applications using Amazon SQS and Amazon SNS.
+* Master containerized application deployment on AWS using Docker, EC2, RDS, and ECR.
+* Explore Amazon Cognito cross-site authentication, managing User Pools and Identity Pools for secure web and mobile applications.
 
 ### Tasks to be carried out this week:
 | Day | Task                                                                                                                                                                                                   | Start Date | Completion Date | Reference Material                        |
 | --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | --------------- | ----------------------------------------- |
-| 2   | - Get acquainted with FCAJ members <br> - Read and take note of internship unit rules and regulations                                                                                                   | 08/11/2025 | 08/11/2025      |
-| 3   | - Learn about AWS and its types of services <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                              | 08/12/2025 | 08/12/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Create AWS Free Tier account <br> - Learn about AWS Console & AWS CLI <br> - **Practice:** <br>&emsp; + Create AWS account <br>&emsp; + Install & configure AWS CLI <br> &emsp; + How to use AWS CLI | 08/13/2025 | 08/13/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Learn basic EC2: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - SSH connection methods to EC2 <br> - Learn about Elastic IP   <br>                            | 08/14/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Practice:** <br>&emsp; + Launch an EC2 instance <br>&emsp; + Connect via SSH <br>&emsp; + Attach an EBS volume                                                                                     | 08/15/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
-
+| 2   | - Process orders with Amazon SQS and SNS <br>&emsp; + Create message queues and SNS topics <br>&emsp; + Implement Lambda functions for order checkout, management, and fulfillment                        | 02/11/2026 | 02/11/2026      | <https://000083.awsfcaj.com/>             |
+| 3   | - Deploy Application on Docker <br>&emsp; + Configure VPC, Security Groups, and IAM roles for ECR <br>&emsp; + Launch and configure RDS database instances                                             | 03/11/2026 | 03/11/2026      | <https://000015.awsfcaj.com/>             |
+| 4   | - Container Deployment and Testing <br>&emsp; + Deploy application using Docker Images and Docker Compose <br>&emsp; + Push and manage container images using Amazon ECR                                 | 04/11/2026 | 04/11/2026      | <https://000015.awsfcaj.com/>             |
+| 5   | - Deploy AWS Cognito Cross Sites <br>&emsp; + Understand core concepts of Amazon Cognito <br>&emsp; + Configure User Pools for user directory and token management                                    | 05/11/2026 | 05/11/2026      | <https://000141.awsfcaj.com/>             |
+| 6   | - Identity Pools & Resource Access <br>&emsp; + Configure Identity Pools to grant secure access to AWS resources <br>&emsp; + Test cross-site authentication and cleanup resources                       | 06/11/2026 | 06/11/2026      | <https://000141.awsfcaj.com/>             |
 
 ### Week 8 Achievements:
 
-* Understood what AWS is and mastered the basic service groups: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
-
-* Successfully created and configured an AWS Free Tier account.
-
-* Became familiar with the AWS Management Console and learned how to find, access, and use services via the web interface.
-
-* Installed and configured AWS CLI on the computer, including:
-  * Access Key
-  * Secret Key
-  * Default Region
-  * ...
-
-* Used AWS CLI to perform basic operations such as:
-
-  * Check account & configuration information
-  * Retrieve the list of regions
-  * View EC2 service
-  * Create and manage key pairs
-  * Check information about running services
-  * ...
-
-* Acquired the ability to connect between the web interface and CLI to manage AWS resources in parallel.
-* ...
+* Successfully built an order-processing pipeline leveraging Amazon SQS for decoupled message queuing and Amazon SNS for instant administrator notifications.
+* Deployed containerized multi-tier applications on AWS using EC2, RDS, and Docker Compose while adhering to network security best practices.
+* Pushed and managed Docker container images efficiently using Amazon Elastic Container Registry (ECR).
+* Gained comprehensive knowledge of Amazon Cognito architecture, successfully differentiating and implementing User Pools and Identity Pools.
+* Configured secure authentication, authorization, and federated identity management across web applications.
