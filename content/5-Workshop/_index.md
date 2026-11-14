@@ -7,23 +7,21 @@ pre: " <b> 5. </b> "
 ---
 
 
-# SecureLearn: Digital Content Protection System for Educational Platforms
+# SecureLearn: A Digital Content Protection System for Educational Platforms
 
-#### Overview
+In this workshop, you will build **SecureLearn**, a cost-effective video content protection solution designed for small and medium-sized educational centers (SMEs). The architecture utilizes a **Hybrid Serverless** model, combining **AWS**—which handles authentication, authorization, video transcoding, AI-based anomaly detection, and business logic—with **Cloudflare**, which manages interface hosting, object storage, edge-based token authentication, and CDN distribution (with no egress bandwidth costs).
 
-**AWS PrivateLink** provides private connectivity to AWS services from VPCs and your on-premises networks, without exposing your traffic to the Public Internet.
+### Workshop Content
 
-In this lab, you will learn how to create, configure, and test VPC endpoints that enable your workloads to reach AWS services without traversing the Public Internet.
-
-You will create two types of endpoints to access Amazon S3: a Gateway VPC endpoint, and an Interface VPC endpoint. These two types of VPC endpoints offer different benefits depending on if you are accessing Amazon S3 from the cloud or your on-premises location
-+ **Gateway** - Create a gateway endpoint to send traffic to Amazon S3 or DynamoDB using private IP addresses.You route traffic from your VPC to the gateway endpoint using route tables.
-+ **Interface** - Create an interface endpoint to send traffic to endpoint services that use a Network Load Balancer to distribute traffic. Traffic destined for the endpoint service is resolved using DNS.
-
-#### Content
-
-1. [Workshop overview](5.1-Workshop-overview)
-2. [Prerequiste](5.2-Prerequiste/)
-3. [Access S3 from VPC](5.3-S3-vpc/)
-4. [Access S3 from On-premises](5.4-S3-onprem/)
-5. [VPC Endpoint Policies (Bonus)](5.5-Policy/)
-6. [Clean up](5.6-Cleanup/)
+1. [Workshop Overview](5.1-Workshop-overview/)
+2. [Prerequisites](5.2-Prerequiste/)
+3. [Deploying the Control Plane on AWS](5.3-AWS-Control-Plane/)
+- [Amazon Cognito User Pool](5.3.1-cognito/)
+- [Lambda License Service & API Gateway](5.3.2-api-lambda/)
+- [AWS KMS & Secrets Manager](5.3.3-kms-secrets/)
+4. [Deploying the Media Plane & Edge Security on Cloudflare](5.4-Cloudflare-Media-Plane/)
+- [Cloudflare R2 & Event Queues](5.4.1-r2-queues/)
+- [Cloudflare Worker for Edge Playback Authentication](5.4.2-edge-worker/)
+- [Protecting the Admin Portal with Cloudflare Zero Trust](5.4.3-zero-trust/)
+5. [AI Monitoring & Alerting System](5.5-AI-Monitoring/)
+6. [Clean Up](5.6-Cleanup/)
