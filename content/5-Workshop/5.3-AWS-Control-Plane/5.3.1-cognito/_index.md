@@ -30,3 +30,16 @@ Record the following parameters for your API Gateway and React frontend configur
 * **App client ID** (`1ts3buhe230pqn3ldfdv90qj7f`)
 * **Cognito domain** (ví dụ: `https://us-east-1ngbokcb38.auth.us-east-1.amazoncognito.com`)
 ![](image-4.png)
+
+### Create DynamoDB
+1. Access DynamoDB > Create table.
+
+2. Table name: SecureLearn-AccessPermissions.
+
+3. Partition key: userId (String).
+
+4. Sort key: videoId (String).
+
+5. Select Default settings > Create table.
+
+![](image-5.png)

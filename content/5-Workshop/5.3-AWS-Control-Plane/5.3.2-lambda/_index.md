@@ -1,5 +1,5 @@
 ---
-title: "Lambda License Service & API Gateway"
+title: "Lambda License Service"
 date: 2026-03-01
 weight: 2
 chapter: false

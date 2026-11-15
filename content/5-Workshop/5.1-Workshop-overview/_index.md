@@ -17,5 +17,5 @@ Small and medium-sized educational centers (SMEs) face severe intellectual prope
 
 ### 2. Architecture Diagrams
 
-![General Architecture](/content/2-Proposal/general.png)
+![General Architecture](image.png)
 

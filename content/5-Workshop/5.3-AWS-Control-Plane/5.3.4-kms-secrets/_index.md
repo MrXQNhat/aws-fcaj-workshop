@@ -3,7 +3,7 @@ title: "AWS KMS & Secrets Manager"
 date: 2026-11-01
 weight: 3
 chapter: false
-pre: " <b> 5.3.3. </b> "
+pre: " <b> 5.3.4. </b> "
 ---
 
 ### Step 1: Create an AWS KMS Encryption Key

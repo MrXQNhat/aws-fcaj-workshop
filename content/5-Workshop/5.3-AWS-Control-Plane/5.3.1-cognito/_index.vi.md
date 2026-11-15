@@ -1,5 +1,5 @@
 ---
-title: "Tạo Amazon Cognito User Pool"
+title: "Tạo Amazon Cognito User Pool & DynamoDB"
 date: 2026-11-01
 weight: 1
 chapter: false
@@ -31,3 +31,16 @@ Ghi chú lại các giá trị sau để cấu hình cho API Gateway và ReactJS
 * **App client ID** (`1ts3buhe230pqn3ldfdv90qj7f`)
 * **Cognito domain** (ví dụ: `https://us-east-1ngbokcb38.auth.us-east-1.amazoncognito.com`)
 ![](image-4.png)
+
+### Tạo DynamoDB
+1. Truy cập DynamoDB > Create table.
+
+2. Table name: SecureLearn-AccessPermissions.
+
+3. Partition key: userId (String).
+
+4. Sort key: videoId (String).
+
+5. Chọn Default settings > Create table.
+
+![](image-5.png)

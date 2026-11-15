@@ -17,7 +17,6 @@ Các trung tâm đào tạo vừa và nhỏ (SMEs) đối mặt với nguy cơ t
 
 ### 2. Sơ đồ Kiến trúc Hệ thống
 
-![Kiến trúc tổng thể](/content/2-Proposal/general.png)
-
+![](image.png)
 
 
