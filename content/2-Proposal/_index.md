@@ -9,119 +9,133 @@ pre: " <b> 2. </b> "
 ## Digital Content Protection System for Educational Platforms — AWS Well-Architected Standards
 
 ### 1. Executive Summary
-**Project Name:** SecureLearn (First Cloud Journey - FCAJ Internship Program)  
-**Architecture Standards:** AWS Well-Architected Framework (6 Pillars) & AWS-Native Serverless  
-
-SecureLearn is a low-cost video content protection solution designed for small and medium-sized educational centers (SMEs). The platform combines AWS for authentication, authorization, video processing, AI, and business logic with Cloudflare for frontend hosting, storage, and content distribution. It converts lecture videos into HLS, controls access using JWT and short-lived playback tokens, and integrates behavioral AI analysis with dynamic watermarking to protect and trace educational intellectual property.
+SecureLearn is a low-cost video content protection solution for small and medium-sized training centers (SMEs) that runs entirely on AWS.
+* A Spring Boot backend on Amazon ECS Fargate handles authentication (Amazon Cognito), authorization, video processing and business logic.
+* The ReactJS frontend is delivered through Amazon S3 + Amazon CloudFront and protected by AWS WAF.
+* Videos are converted to HLS and encrypted with AES-128 by FFmpeg. Viewing rights are controlled by JWTs and short-lived playback tokens, and each segment can only be downloaded through a 60-second presigned URL.
+* The system combines behavioral AI (Isolation Forest on AWS Lambda) with dynamic watermarking to protect intellectual property.
 
 ### 2. Problem Statement
 ### What’s the Problem?
-In the era of digital education, small and medium-sized educational centers (SMEs) and online learning platforms face severe intellectual property leakage risks as lecture videos are downloaded, screen-recorded, and redistributed illegally on social media. Large-scale commercial DRM solutions (such as Google Widevine and Microsoft PlayReady) involve high licensing costs and integration complexity, making them financially unfeasible for most SMEs.
+In the era of digital education, small and medium-sized training centers (SMEs) and e-learning platforms face serious intellectual-property loss as lecture videos are downloaded, screen-recorded and redistributed without permission on social networks. Large-scale commercial DRM solutions (such as Google Widevine and Microsoft PlayReady) carry very high licensing costs and integration complexity, beyond the budget of most SMEs.
 
 ### The Solution
-SecureLearn utilizes an AWS-Cloudflare Hybrid Serverless Architecture. It automates video processing via AWS Elemental MediaConvert, manages access control using API Gateway, Lambda, and DynamoDB, and leverages Cloudflare R2, Workers, and CDN for secure distribution. Key features include JWT authentication, short-lived playback tokens, Isolation Forest AI anomaly detection via Lambda and EventBridge, dynamic watermarking, and automated alerts via Amazon SNS.
+SecureLearn uses a serverless container architecture on AWS:
+* **Video processing:** the Spring Boot backend on Amazon ECS Fargate uses FFmpeg to convert videos to HLS and encrypt them with AES-128 inside the container, with no separate transcoding service.
+* **Data:** course data lives in Amazon RDS for PostgreSQL, access logs in Amazon DynamoDB, and videos in private Amazon S3.
+* **Delivery:** Amazon CloudFront, AWS WAF and an Application Load Balancer deliver the frontend and API securely.
+* **Core features:** JWT authentication through Amazon Cognito, short-lived HMAC playback tokens, AI anomaly detection with Isolation Forest on Lambda and EventBridge, dynamic watermarking and automatic alerts through Amazon SNS.
 
 **Comparative Table of Current Issues, Business Impacts, and AWS Solutions:**
 | Current Issue | Business Impact | SecureLearn Solution (AWS / Cloudflare) |
 | --- | --- | --- |
-| Videos downloaded & illegally shared | Revenue loss, leakage of exclusive lecture IP | HLS/DASH encryption via AWS Elemental MediaConvert combined with JWT authentication |
-| Lack of proactive monitoring | Failure to detect account sharing or video crawling in real-time | Automated Lambda Isolation Forest AI model scanning logs with SNS alerts |
-| Inability to trace leaks | Unable to identify culprits when videos are screen-recorded | Dynamic Watermark displaying User ID & IP directly on the video player |
-| High commercial DRM costs | SMEs cannot afford infrastructure upkeep | Hybrid Serverless architecture using AWS for control plane and Cloudflare for media plane, reducing operational costs and avoiding traditional servers |
+| Videos downloaded & illegally shared | Revenue loss, leakage of exclusive lecture IP | AES-128 encrypted HLS produced by FFmpeg; the decryption key is only returned to holders of a valid playback token; segments are only downloadable through 60-second S3 presigned URLs|
+| Lack of proactive monitoring | Failure to detect account sharing or video crawling in real-time | Every playback request is logged to DynamoDB (IP, device fingerprint); an Isolation Forest Lambda scans logs every 5 minutes and alerts through SNS |
+| Inability to trace leaks | Unable to identify culprits when videos are screen-recorded | A dynamic watermark shows the learner ID and time, moving continuously over the video player |
+| High commercial DRM costs | SMEs cannot afford infrastructure upkeep | AWS managed services (ECS Fargate, RDS, S3, CloudFront), no server administration, no DRM licensing fees; AWS Free Tier credits cover the early phase |
 
 ### Benefits and Return on Investment
-The solution eliminates traditional server maintenance, drastically reducing operational expenses compared to commercial DRM platforms. It protects exclusive educational assets, prevents unauthorized sharing, provides active anomaly monitoring, and traces content leaks via dynamic watermarking, all while keeping estimated monthly infrastructure costs around $46 USD.
+The solution needs no physical or virtual server administration and no commercial DRM licensing. It protects exclusive content, prevents unauthorized account sharing, monitors anomalies automatically and supports leak tracing. Estimated infrastructure cost is about $165 USD/month running 24/7 (about $60–75 USD/month when only running during working hours).
 
 ### 3. Solution Architecture
-The system is built on an AWS-Cloudflare Hybrid Serverless Architecture, completely eliminating traditional servers and divided into 4 main functional layers:
-1. **Media Pipeline (Upload & Processing):** Cloudflare R2 (Source Bucket) stores raw videos with AES-256 at-rest encryption; R2 Event Notifications trigger Cloudflare Queues; Consumer Workers coordinate video transfer to AWS Elemental MediaConvert; MediaConvert outputs HLS/DASH manifests (`.m3u8` / `.mpd`).
-2. **Delivery & Access Control:** Students log in via Cognito and receive JWTs; Lambda License Service verifies entitlements in DynamoDB and requests short-lived signed tokens from Cloudflare; Cloudflare Workers validate tokens before serving private HLS/DASH segments from R2 via CDN.
-3. **Security & Key Management:** AWS KMS protects credentials and secrets used by Lambda; MediaConvert requires signed URLs (`requireSignedURLs`); AWS CloudTrail records audit logs.
+The system runs entirely on AWS, with no traditional server administration, and is organized into 4 functional layers:
+1. **Media Pipeline (Upload & Processing):** Instructors request a presigned URL from the backend and upload the raw video straight to Amazon S3 (SSE-KMS encryption at rest).
+The Spring Boot backend on ECS Fargate downloads the raw video and uses FFmpeg to transcode it to HLS (6-second segments, H.264/AAC), encrypting it with AES-128 using a per-lesson key.
+The backend stores segment_XXX.ts, content.key and master.m3u8 in S3, writes the lesson to RDS PostgreSQL and deletes the raw video.
+2. **Delivery & Access Control:** Learners sign in through Amazon Cognito and receive a JWT.
+The backend validates the JWT, issues an HMAC-SHA256 playback token (2-hour lifetime) and rewrites the manifest so both the key and the segments must go through the backend.
+The AES-128 key is only returned to the token holder. Each segment is redirected (302) to a 60-second S3 presigned URL.
+The ReactJS frontend is served from S3 through CloudFront; /api/* goes through CloudFront → ALB → ECS.
+3. **Security & Key Management:** AWS WAF filters requests at CloudFront: managed rules, rate limiting and an IP allow-list for admin APIs.
+AWS KMS and AWS Secrets Manager protect the database password, the Cognito client secret and the token-signing key.
+The backend uses an IAM role instead of access keys. Security groups only allow the CloudFront → ALB → ECS → RDS chain.
+AWS CloudTrail records audit logs.
 4. **AI & Tracing:** Offline training using Isolation Forest in Jupyter Notebooks (`.pkl` model stored in R2); AWS Lambda (triggered by EventBridge every 5 mins) reads access logs from DynamoDB/CloudWatch, runs anomaly inference, and publishes alerts via Amazon SNS; JavaScript-based dynamic watermarks display moving user IDs.
 
 **Data Flow Diagrams:**
-- Upload Flow: User → API Gateway → Upload Lambda → R2 (Private Source) → R2 Event Notification → Cloudflare Queue → Consumer Worker → AWS MediaConvert → HLS/DASH → Cloudflare CDN → Student.
-![SecureLearn Architecture 1](datatransfer.png)  
-- Playback Flow: User → JWT → API Gateway → Authorization Lambda → DynamoDB check → AWS Elemental MediaConvert + Cloudflare R2/Workers Signed Token → HLS/DASH Player → Dynamic Watermark.
-![SecureLearn Architecture 1](playback.png)  
-- AI Branch Flow: Authorization/Application Logs → CloudWatch/DynamoDB → EventBridge (every 5 min) → Lambda Anomaly Detection → Isolation Forest → Anomaly detected → SNS → Admin Email.
-![SecureLearn Architecture 1](AI.png)  
-General diagram architecture:
-![SecureLearn Architecture 4](general.png)  
+- Upload flow: Instructor → CloudFront → ALB → ECS (request presigned URL) → Browser PUTs the video to S3 videos/ → ECS (FFmpeg transcoding + AES-128 encryption) → S3 hls/ + RDS → Learner.
+- Playback flow: Learner → Cognito JWT → CloudFront → ALB → ECS (validate JWT, issue playback token, write AccessLog to DynamoDB) → Manifest + AES-128 key → Segments downloaded from S3 via 60-second presigned URLs → HLS Player → Dynamic Watermark. 
+- AI branch: DynamoDB AccessLog → EventBridge Scheduler (every 5 minutes) → Lambda Anomaly Detection → Isolation Forest → If an anomaly is detected → SNS → Admin email.
+
+- General diagram:
+![](general.png)
 
 ### AWS Services Used
-- **AWS Elemental MediaConvert:** Transcodes raw videos into HLS/DASH streaming formats.
-- **AWS Lambda & Amazon API Gateway:** Handle upload handling, license verification, JWT authorization, and AI anomaly detection logic.
+- **AWS Lambda:** Handle upload handling, license verification, JWT authorization, and AI anomaly detection logic.
 - **Amazon DynamoDB:** On-demand NoSQL storage for sessions, DRM logs, and metadata.
 - **Amazon CloudWatch & AWS CloudTrail:** Centralize audit trails and application logs.
 - **AWS KMS & AWS Secrets Manager:** Secure cryptographic keys and API tokens.
 - **Amazon SNS:** Broadcasts automated email alerts to administrators upon detecting anomalies.
 - **AWS EventBridge:** Triggers the AI anomaly detection Lambda function every 5 minutes.
-- **Cloudflare R2, Workers, Queues, & CDN:** Provide object storage, event routing, queue decoupling, edge security, and fast content delivery.
-
+- **Amazon ECS Fargate, Amazon ECR & Application Load Balancer:** Run the Spring Boot backend (API, authentication, playback tokens, FFmpeg transcoding) as a container without server administration.
+- **Amazon RDS for PostgreSQL:** Stores course, chapter and lesson data.
+- **Amazon S3:** Stores raw videos, encrypted HLS, the static frontend and the AI model.
+- **Amazon CloudFront, AWS WAF, Amazon Route 53 & AWS Certificate Manager:** Deliver the frontend/API over HTTPS, protect the edge and manage the domain.
 ### Evaluation Against 6 AWS Well-Architected Pillars
 | Pillar | Implementation Design | AWS / Cloudflare Services Used |
 | --- | --- | --- |
-| **Security** | Least privilege IAM roles; at-rest (AES-256) and in-transit (TLS 1.3) encryption; secrets managed via AWS Secrets Manager; perimeter defense via Cloudflare WAF and Zero Trust Access. | AWS IAM, KMS, Secrets Manager; Cloudflare WAF, Access |
-| **Reliability** | Cloudflare Queues decouple upload events from processing; Lambda retry mechanisms; R2 data durability of 11 nines (99.999999999%); industrial-grade transcoding via MediaConvert. | Cloudflare R2, Queues, AWS Lambda, EventBridge |
-| **Operational Excellence** | Centralized logging via CloudWatch Logs and CloudTrail; automated anomaly alerting via CloudWatch Alarms and Amazon SNS. | Amazon CloudWatch, AWS CloudTrail, SNS, Cloudflare Logpush |
-| **Performance Efficiency** | Auto-scaling with Serverless Lambda & API Gateway; optimized video delivery via global Cloudflare CDN and Edge Caching; high-speed parallel MediaConvert transcode. | AWS Lambda, MediaConvert, API Gateway, Cloudflare CDN |
-| **Cost Optimization** | Pay-as-you-go serverless model; leverage AWS Free Tier and Cloudflare Free Plan; R2 Zero Egress Fee to minimize data transfer costs. | AWS Free Tier, Cloudflare R2 (Zero Egress), Free Plan |
-| **Sustainability** | Optimized energy consumption using shared AWS serverless infrastructure and Cloudflare edge networks, avoiding idle server waste. | AWS Serverless Stack, Cloudflare Edge Network |
+| **Security** | Least-privilege IAM roles, no static access keys; encryption at rest (SSE-KMS) & in transit (TLS); AES-128 encrypted HLS content; secrets in Secrets Manager; edge protection with AWS WAF; security-group chain allowing only CloudFront → ALB → ECS → RDS; Cognito group authorization in Spring Security. |AWS IAM, KMS, Secrets Manager, WAF, Cognito, VPC |
+| **Reliability** | ALB across 2 AZs with health checks; ECS restarts failed tasks; RDS automated backups for 7 days; S3 durability of 11 nines (99.999999999%). RDS can be upgraded to Multi-AZ and ECS to 2 tasks in production. | Amazon ECS, ALB, RDS, S3 |
+| **Operational Excellence** | Centralized logs with CloudWatch Logs and CloudTrail; automatic anomaly alerts through Amazon SNS; backend packaged as a Docker image in ECR and redeployed with a single ECS service update. | Amazon CloudWatch, AWS CloudTrail, SNS, ECR |
+| **Performance Efficiency** | Frontend cached at CloudFront edge locations; ECS Fargate scales by task count; video segments downloaded directly from S3 without passing through the backend; DynamoDB on-demand scales automatically. | Amazon CloudFront, ECS Fargate, S3, DynamoDB |
+| **Cost Optimization** | Pay-as-you-go; no DRM licensing and no paid transcoding service (FFmpeg in the container); no NAT Gateway; AWS Free Tier credits and always-free services (Lambda, DynamoDB, SNS, EventBridge); ECS/RDS turned off outside working hours. | AWS Free Tier, ECS Fargate, Lambda, DynamoDB |
+| **Sustainability** | Shared AWS managed infrastructure; Fargate provisions only the CPU/RAM needed; the AI Lambda runs only a few seconds every 5 minutes; lifecycle rules delete leftover raw videos. | AWS Fargate, Lambda, S3 Lifecycle |
 
 ### 4. Technical Implementation
 **Implementation Scope:**
-- **In-Scope:** HLS video protection, JWT user authentication, short-lived playback tokens validated by Cloudflare Workers, HLS/DASH distribution from private R2 buckets, automated DynamoDB/CloudWatch log analysis, and SNS alerts.
-- **Out-of-Scope:** PDF/Word document protection, hardware DRM integration (HDCP), and real-time livestream video processing.
+- **In-Scope:** Protection of AES-128 encrypted HLS video, JWT authentication through Cognito, short-lived playback tokens validated by the backend, segment delivery from private S3 via presigned URLs, access logging to DynamoDB, automatic AI log analysis with SNS alerts, dynamic watermarking.
+- **Out-of-Scope:** Protection of PDF/Word documents, hardware DRM (HDCP) or commercial DRM (Widevine/PlayReady/FairPlay) integration, real-time livestream processing.
 
 **Implementation Phases:**
-- **Week 1:** Research MediaConvert, R2, KMS, Lambda; design AWS + Cloudflare hybrid architecture; setup AWS and Cloudflare accounts, and dev environments.
-- **Week 2:** Setup Cloudflare R2 bucket and Workers; write upload Lambda triggers; configure MediaConvert HLS/DASH job templates; build basic React + HLS.js video player.
-- **Week 3:** Implement Lambda License Service for JWT/entitlement verification and token issuance; integrate Cloudflare Signed URLs & Zero Trust Access; build Admin Portal and DynamoDB metadata APIs.
-- **Week 4:** Test token lifecycles and expiration; train Isolation Forest model locally, serialize to `.pkl`, and upload to Cloudflare R2 (`models/` prefix); write anomaly detection Lambda; create 5-minute EventBridge rule; integrate CloudWatch + SNS; develop dynamic watermarking.
-- **Week 5:** Integrate dynamic watermarking into video player; build watermark leakage tracing tools; perform internal security pen-testing (video downloading, account sharing tests); optimize costs and check AWS Budgets.
-- **Week 6:** Fix bugs, refine UI/UX, record demo video (5-7 mins), write technical blog, finalize workshop lab guide, and prepare presentation slides.
+- **Week 1-3:** Study Cognito, ECS Fargate, RDS, S3, KMS; design the AWS architecture; set up accounts, the VPC and the dev environment (Spring Boot, React, Docker).
+- **Week 4-6:** Create the S3 bucket and the presigned-URL upload flow; write VideoProcessingService using FFmpeg for HLS transcoding + AES-128 encryption; build a basic React player with hls.js.
+- **Week 7-8:** Build the playback-token API, manifest rewriting, key delivery and segment redirects; integrate Cognito (sign-up, OTP, sign-in, groups); package with Docker and deploy to ECS Fargate + ALB + RDS; configure CloudFront and AWS WAF.
+- **Week 9-10:** Test the token lifecycle; write AccessLog to DynamoDB; train the Isolation Forest model (locally) and serialize it to a .pkl file on S3 (models/ prefix); write the Anomaly Detection Lambda; create a 5-minute EventBridge Scheduler; integrate CloudWatch + SNS; develop the dynamic watermark.
+- **Week 11:** Integrate the dynamic watermark and device fingerprint into the video player; build the leak-tracing tool; internal security testing (pen-test, API authorization checks); cost optimization and AWS Budgets review.
+- **Week 12:** Fix bugs, refine UI/UX, record demo video (5-7 mins), write technical blog, finalize workshop lab guide.
 
 ### 5. Timeline & Milestones
-- **Week 1:** Architecture design, account setup, and theoretical research.
-- **Week 2:** Media pipeline setup and automated video transcoding.
-- **Week 3:** Access control, JWT authentication, and secure playback integration.
-- **Week 4:** AI anomaly detection integration and token lifecycle testing.
-- **Week 5:** Dynamic watermarking integration and security penetration testing.
-- **Week 6:** Bug fixing, demo recording, documentation, and final presentation.
+- **Week 1-3:** Architecture design, account setup, and theoretical research.
+- **Week 4-6:** Media pipeline setup and automated video transcoding.
+- **Week 7-8:** Access control, JWT authentication, and secure playback integration.
+- **Week 9-10:** AI anomaly detection integration and token lifecycle testing.
+- **Week 11:** Dynamic watermarking integration and security penetration testing.
+- **Week 12:** Bug fixing, demo recording, documentation, and final presentation.
 
 ### 6. Budget Estimation
-Total estimated monthly infrastructure cost is **~$46 USD/month** (simulated with 100 storage hours + 100 viewed hours/month).  
+Estimated total infrastructure cost is about ~$165 USD/month running 24/7 in the Singapore region (scenario: 100 hours of stored video + 100 hours watched/month). Running ECS and RDS only during working hours (~8 hours/day) brings it down to about ~$60–75 USD/month.
 *Note: Actual costs vary based on usage, region, pricing plans, and AWS Free Tier eligibility.*
 
 **Infrastructure Cost Breakdown:**
-- **Cloudflare R2:** ~$1.20 (100 GB storage, 50k requests, Zero Egress)
-- **Cloudflare Pages:** $0.00 (React frontend hosting)
-- **Cloudflare Workers & Queues:** $0.00 (Free Plan)
+- **Amazon ECS Fargate:** ~$93 (1 task 2 vCPU / 4 GB + 50 GB ephemeral storage for FFmpeg)
+- **Application Load Balancer:** ~$23 (1 ALB, low traffic)
+- **Amazon RDS for PostgreSQL:** ~$21 (db.t4g.micro Single-AZ + 20 GB gp3)
 - **Amazon Cognito:** $0.00 (User Pool authentication)
-- **Cloudflare Zero Trust (Access):** $0.00 (Admin portal protection, up to 50 users)
-- **AWS MediaConvert:** ~$45+ (100 input hours / 6,000 transcode minutes at ~$0.0075/min Basic AVC tier)
+- **AWS WAF:** ~$12 (1 Web ACL + 7 rules)
+- **AWS Route 53:** ~$0.50 (1 hosted zone, domain registration not included)
+- **Amazon S3:** ~$2 (~70 GB of HLS + frontend + model)
 - **AWS Secrets Manager:** ~$0.40 (API tokens and credentials)
+- **Amazon CloudFront:** $0.00 (Always Free 1 TB/month)
 - **AWS KMS:** ~$1.15 (Customer Managed Key for secrets encryption)
 - **AWS Lambda:** $0.00 (Covered by Free Tier for 50k invocations)
 - **Amazon API Gateway:** ~$0.10 (20k REST API calls)
 - **Amazon DynamoDB:** $0.00 (On-Demand Free Tier)
-- **Amazon CloudWatch:** ~$0.75 (Audit logs and alarms)
+- **Amazon CloudWatch & ECR:** ~$0.75 (Audit logs and alarms)
 - **AWS EventBridge:** $0.00 (Triggering anomaly detection every 5 mins)
 
 **Resource Clean-up Plan:**
-- *AWS:* Delete Lambda functions, API Gateways, DynamoDB tables, SNS topics, EventBridge rules, KMS keys, Secrets Manager secrets, and CloudWatch Log Groups.
-- *Cloudflare:* Manually delete all videos, R2 bucket objects, Workers, Queues, and Zero Trust configurations after recording the demo.
+- *AWS:* elete the remaining resources (CloudFront, WAF, S3, ECR, Lambda, DynamoDB, SNS, EventBridge, Cognito, KMS, Secrets Manager, VPC, CloudWatch Log Groups, Route 53 records).
+- *Priority:* Delete the ECS service/cluster, the ALB and RDS right after recording the demo, since they are billed hourly.
 
 ### 7. Risk Assessment
 **Risk Matrix & Mitigation Strategies:**
-- **R2 and AWS Lambda integration complexity (Medium impact, medium probability):** R2 is S3-API compatible, enabling AWS SDK usage. Use Cloudflare Workers or polling for triggers.
-- **AWS MediaConvert lacks full native DRM (High impact, low probability):** Clearly define scope around secure video access, anti-sharing, and traceability. Enable `requireSignedURLs`, short-lived tokens, and watermarks. MVP does not equal Widevine/PlayReady/FairPlay.
+- **Long video transcoding exceeding timeouts (Medium impact, medium probability):** The /upload/process API runs synchronously while CloudFront waits at most 60 seconds. Demo with short videos; the improvement is background processing (return 202 and poll the status) or moving FFmpeg to a separate ECS task.
+- **AWS  lacks full native DRM (High impact, low probability):** Clearly define scope around secure video access, anti-sharing, and traceability. Enable `requireSignedURLs`, short-lived tokens, and watermarks. MVP does not equal Widevine/PlayReady/FairPlay.
 - **Signed Token leakage or incorrect expiration (Medium impact, medium probability):** Set short TTLs (1 hour), limit concurrent device sessions, and combine with AI anomaly detection.
 - **AI model false-positive predictions (Medium impact, medium probability):** Start with Isolation Forest, tune contamination thresholds properly, and log false-positives for periodic retraining.
 - **Short internship duration (6 weeks) (High impact, low probability):** Prioritize MVP first: Upload → Process → Authorization → Secure Playback, then integrate AI and watermarks.
 - **Cost overruns (Medium impact, low probability):** Setup strict budget alerts on both AWS and Cloudflare.
 
 ### 8. Expected Outcomes
-**Technical Improvements:** Automated secure media processing pipeline, hybrid serverless architecture implementation, and automated AI anomaly detection.  
-**Long-Term Value:** Provides a cost-effective, scalable digital content protection framework that empowers small and medium educational platforms to safeguard intellectual property without excessive commercial expenses.
+**Technical Improvements:** Build an automated secure media pipeline (AES-128 HLS transcoding + encryption), apply a serverless container architecture on AWS and integrate automatic AI anomaly detection. 
+**Long-Term Value:** Provide a cost-effective, highly scalable digital content protection framework that helps SME education platforms comprehensively protect their intellectual property.

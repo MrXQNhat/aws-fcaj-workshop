@@ -15,24 +15,26 @@ pre: " <b> 5.3.4. </b> "
 ![](image.png)
 
 4. **Alias ​​/ Description:** `SecureLearn-Key`.
-5. Assign administrative and usage permissions for the key to the Lambda IAM role, then click **Finish**.
+5. Assign key administration to your IAM user/role. Key usage for the ECS task (section 5.3.3) and the Lambda (section 5.3.2) is granted through each role's IAM policy; then click **Finish**.
 ![](image-1.png)
 
 ![](image-2.png)
 
 ![](image-3.png)
 
+This key encrypts the secret in Step 2 and the video bucket (SSE-KMS, section 5.4.1), which holds each lesson's `content.key`.
+
 ### Step 2: Store Credentials in Secrets Manager
-1. Go to **AWS Secrets Manager** > **Store a new secret**.
-2. **Secret type:** Select **Other type of secret**.
-3. **Key/value pairs:**
-* `CLOUDFLARE_API_TOKEN`: `<your-cloudflare-api-token>`
-* `R2_ACCESS_KEY_ID`: `<your-r2-access-key>`
-* `R2_SECRET_ACCESS_KEY`: `<your-r2-secret-key>`
-* `PLAYBACK_SIGNING_SECRET`: `<HMAC-secret-key-shared-with-the-worker>`
-4. **Encryption key:** Select the `SecureLearn-Key` created in Step 1.
+1. Generate the playback-token signing key with `openssl rand -base64 48`.
+2. Go to **AWS Secrets Manager** > **Store a new secret**.
+3. **Secret type:** Select **Other type of secret**.
+4. **Key/value pairs:**
+   * `SPRING_DATASOURCE_PASSWORD`: `<RDS-master-password>` (section 5.3.3)
+   * `COGNITO_CLIENT_SECRET`: `<app-client-secret>` (section 5.3.1)
+   * `PLAYBACK_TOKEN_SECRET`: `<string-generated-in-step-1>`
+5. **Encryption key:** Select the `SecureLearn-Key` created in Step 1.
 ![](image-4.png)
-5. **Secret name:** `SecureLearn/CloudflareCredentials`.
+6. **Secret name:** `SecureLearn/be`.
 ![](image-5.png)
-6. Click **Store** and ensure that the Lambda IAM role has the necessary permissions: `kms:Decrypt` and `secretsmanager:GetSecretValue`.
+7. Click **Store**, note the **Secret ARN** for the task definition (section 5.3.3, Step 7), and make sure `securelearn-ecs-execution-role` has `kms:Decrypt` and `secretsmanager:GetSecretValue`.
 ![](image-6.png)

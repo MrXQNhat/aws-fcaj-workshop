@@ -9,15 +9,33 @@ pre: " <b> 5.6. </b> "
 Sau khi hoàn thành bài thực hành và quay video demo báo cáo, hãy tiến hành xóa toàn bộ tài nguyên đã khởi tạo để tránh phát sinh chi phí ngoài ý muốn.
 
 ### 1. Dọn dẹp Tài nguyên trên AWS
-1. **Amazon EventBridge:** Xóa lịch chạy tự động `SecureLearn-AI-Scan-Schedule`.
-2. **AWS Lambda:** Xóa các hàm `SecureLearn-LicenseService`, `SecureLearn-AnomalyDetection` và các Lambda Layer đi kèm.
-3. **Amazon API Gateway:** Xóa `SecureLearn-API`.
-4. **Amazon Cognito:** Xóa User Pool `SecureLearnUserPool`.
-5. **Amazon DynamoDB & SNS:** Xóa các bảng dữ liệu trên DynamoDB và SNS topic `SecureLearn-AnomalyAlerts`.
-6. **AWS Secrets Manager & KMS:** Xóa secret `SecureLearn/CloudflareCredentials` và đặt lịch xóa khóa `SecureLearn-Key` (thời gian chờ tối thiểu 7 ngày).
-7. **Amazon CloudWatch:** Xóa thủ công các Log Group còn sót lại do Lambda và API Gateway tạo ra.
+1. AWS WAF & CloudFront (us-east-1 / Global): Bỏ liên kết và xóa Web ACL securelearn-waf, IP set securelearn-admin-allowlist; Disable rồi Delete distribution, xóa CloudFront Function securelearn-spa-rewrite.
+2. Amazon ECS & ECR: Đặt desired count của securelearn-backend-svc về 0, xóa service, cluster securelearn-cluster, deregister task definition securelearn-backend và xóa repository securelearn-backend.
+3. Elastic Load Balancing & ACM: Xóa securelearn-alb, target group securelearn-backend-tg, sau đó xóa chứng chỉ ACM ở cả ap-southeast-1 (ALB) và us-east-1 (CloudFront).
+4. Amazon RDS: Xóa securelearn-db (bỏ chọn final snapshot nếu không cần giữ dữ liệu) và subnet group securelearn-db-subnets.
+5. Amazon DynamoDB: Xóa bảng AccessLog.
+6. Amazon S3: Làm rỗng và xóa các bucket securelearn-media-<account-id>, securelearn-web-<account-id>.
+7. AWS Secrets Manager & KMS: Xóa secret securelearn/backend và đặt lịch xóa khóa SecureLearn-Key (thời gian chờ tối thiểu 7 ngày), chỉ sau khi đã xóa bucket video.
+8. Amazon Cognito: Xóa User Pool SecureLearn.
+9. Route 53: Xóa bản ghi learn, origin và các bản ghi xác thực ACM.
+10. Amazon VPC: Xóa securelearn-vpc (kèm subnet, Security Group và S3 Gateway endpoint).
+11. IAM: Xóa các role securelearn-ecs-execution-role, securelearn-ecs-task-role.
+12. Amazon CloudWatch & CloudTrail: Xóa thủ công các Log Group còn sót lại do ECS tạo ra; xóa trail securelearn-trail nếu đã tạo.
 
-### 2. Dọn dẹp Tài nguyên trên Cloudflare
-1. **Cloudflare R2:** Xóa toàn bộ video gốc, các phân đoạn HLS/DASH đã chuyển mã và file model `.pkl` trong bucket, sau đó xóa các bucket.
-2. **Cloudflare Workers & Queues:** Xóa các Worker `SecureLearn-EdgeAuth`, `SecureLearn-UploadConsumer` và hàng đợi `securelearn-video-uploads`.
-3. **Cloudflare Zero Trust:** Xóa ứng dụng và chính sách truy cập `SecureLearn Admin Portal`.
+```powershell
+aws events remove-targets --rule securelearn-anomaly-every-5min --ids 1 --region $REGION
+aws events delete-rule --name securelearn-anomaly-every-5min --region $REGION
+$ESM = aws lambda list-event-source-mappings --function-name $FUNC --region $REGION --query "EventSourceMappings[0].UUID" --output text
+aws lambda delete-event-source-mapping --uuid $ESM --region $REGION
+aws lambda delete-function --function-name $FUNC --region $REGION
+aws ecr delete-repository --repository-name $REPO --force --region $REGION
+aws iam delete-role-policy --role-name $ROLE --policy-name securelearn-anomaly-access
+aws iam detach-role-policy --role-name $ROLE --policy-arn arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+aws iam delete-role --role-name $ROLE
+$TOPIC = aws sns list-topics --region $REGION --query "Topics[?ends_with(TopicArn, ':securelearn-anomaly-alerts')].TopicArn" --output text
+aws sns delete-topic --topic-arn $TOPIC --region $REGION
+aws s3 rb "s3://$BUCKET" --force
+aws dynamodb delete-table --table-name AnomalyAlert --region $REGION
+aws logs delete-log-group --log-group-name /aws/lambda/$FUNC --region $REGION
+```
+Các lệnh trên xóa: rule EventBridge securelearn-anomaly-every-5min, kết nối stream, Lambda securelearn-anomaly-detection, repository ECR securelearn-anomaly, role securelearn-anomaly-lambda-role, SNS topic securelearn-anomaly-alerts, bucket securelearn-models-<account-id>, bảng AnomalyAlert và log group của Lambda. Bảng AccessLog dùng chung với backend.
