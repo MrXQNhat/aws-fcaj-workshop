@@ -12,7 +12,7 @@ pre: " <b> 2. </b> "
 SecureLearn is a low-cost video content protection solution for small and medium-sized training centers (SMEs) that runs entirely on AWS.
 * A Spring Boot backend on Amazon ECS Fargate handles authentication (Amazon Cognito), authorization, video processing and business logic.
 * The ReactJS frontend is delivered through Amazon S3 + Amazon CloudFront and protected by AWS WAF.
-* Videos are converted to HLS and encrypted with AES-128 by FFmpeg. Viewing rights are controlled by JWTs and short-lived playback tokens, and each segment can only be downloaded through a 60-second presigned URL.
+* Videos are converted to HLS and encrypted with AES-128 by MediaConvert. Viewing rights are controlled by JWTs and short-lived playback tokens, and each segment can only be downloaded through a 60-second presigned URL.
 * The system combines behavioral AI (Isolation Forest on AWS Lambda) with dynamic watermarking to protect intellectual property.
 
 ### 2. Problem Statement
@@ -21,7 +21,7 @@ In the era of digital education, small and medium-sized training centers (SMEs) 
 
 ### The Solution
 SecureLearn uses a serverless container architecture on AWS:
-* **Video processing:** the Spring Boot backend on Amazon ECS Fargate uses FFmpeg to convert videos to HLS and encrypt them with AES-128 inside the container, with no separate transcoding service.
+* **Video processing:** The Spring Boot backend on Amazon ECS Fargate generates an AES-128 key unique to the lesson and creates an AWS Elemental MediaConvert job. MediaConvert converts the video to HLS and encrypts every segment with AES-128 using the lesson's key, writing the output to S3.
 * **Data:** course data lives in Amazon RDS for PostgreSQL, access logs in Amazon DynamoDB, and videos in private Amazon S3.
 * **Delivery:** Amazon CloudFront, AWS WAF and an Application Load Balancer deliver the frontend and API securely.
 * **Core features:** JWT authentication through Amazon Cognito, short-lived HMAC playback tokens, AI anomaly detection with Isolation Forest on Lambda and EventBridge, dynamic watermarking and automatic alerts through Amazon SNS.
@@ -29,7 +29,7 @@ SecureLearn uses a serverless container architecture on AWS:
 **Comparative Table of Current Issues, Business Impacts, and AWS Solutions:**
 | Current Issue | Business Impact | SecureLearn Solution (AWS / Cloudflare) |
 | --- | --- | --- |
-| Videos downloaded & illegally shared | Revenue loss, leakage of exclusive lecture IP | AES-128 encrypted HLS produced by FFmpeg; the decryption key is only returned to holders of a valid playback token; segments are only downloadable through 60-second S3 presigned URLs|
+| Videos downloaded & illegally shared | Revenue loss, leakage of exclusive lecture IP | AES-128 encrypted HLS produced by MediaConvert; the decryption key is only returned to holders of a valid playback token; segments are only downloadable through 60-second S3 presigned URLs|
 | Lack of proactive monitoring | Failure to detect account sharing or video crawling in real-time | Every playback request is logged to DynamoDB (IP, device fingerprint); an Isolation Forest Lambda scans logs every 5 minutes and alerts through SNS |
 | Inability to trace leaks | Unable to identify culprits when videos are screen-recorded | A dynamic watermark shows the learner ID and time, moving continuously over the video player |
 | High commercial DRM costs | SMEs cannot afford infrastructure upkeep | AWS managed services (ECS Fargate, RDS, S3, CloudFront), no server administration, no DRM licensing fees; AWS Free Tier credits cover the early phase |
@@ -40,7 +40,7 @@ The solution needs no physical or virtual server administration and no commercia
 ### 3. Solution Architecture
 The system runs entirely on AWS, with no traditional server administration, and is organized into 4 functional layers:
 1. **Media Pipeline (Upload & Processing):** Instructors request a presigned URL from the backend and upload the raw video straight to Amazon S3 (SSE-KMS encryption at rest).
-The Spring Boot backend on ECS Fargate downloads the raw video and uses FFmpeg to transcode it to HLS (6-second segments, H.264/AAC), encrypting it with AES-128 using a per-lesson key.
+The Spring Boot backend on ECS Fargate downloads the raw video and uses MediaConvert to transcode it to HLS (6-second segments, H.264/AAC), encrypting it with AES-128 using a per-lesson key.
 The backend stores segment_XXX.ts, content.key and master.m3u8 in S3, writes the lesson to RDS PostgreSQL and deletes the raw video.
 2. **Delivery & Access Control:** Learners sign in through Amazon Cognito and receive a JWT.
 The backend validates the JWT, issues an HMAC-SHA256 playback token (2-hour lifetime) and rewrites the manifest so both the key and the segments must go through the backend.
@@ -53,7 +53,7 @@ AWS CloudTrail records audit logs.
 4. **AI & Tracing:** Offline training using Isolation Forest in Jupyter Notebooks (`.pkl` model stored in R2); AWS Lambda (triggered by EventBridge every 5 mins) reads access logs from DynamoDB/CloudWatch, runs anomaly inference, and publishes alerts via Amazon SNS; JavaScript-based dynamic watermarks display moving user IDs.
 
 **Data Flow Diagrams:**
-- Upload flow: Instructor → CloudFront → ALB → ECS (request presigned URL) → Browser PUTs the video to S3 videos/ → ECS (FFmpeg transcoding + AES-128 encryption) → S3 hls/ + RDS → Learner.
+- Upload flow: Instructor → CloudFront → ALB → ECS (request presigned URL) → Browser PUTs the video to S3 videos/ → ECS ( create key + job)→ MediaConvert → S3 hls/ + RDS → Learner.
 - Playback flow: Learner → Cognito JWT → CloudFront → ALB → ECS (validate JWT, issue playback token, write AccessLog to DynamoDB) → Manifest + AES-128 key → Segments downloaded from S3 via 60-second presigned URLs → HLS Player → Dynamic Watermark. 
 - AI branch: DynamoDB AccessLog → EventBridge Scheduler (every 5 minutes) → Lambda Anomaly Detection → Isolation Forest → If an anomaly is detected → SNS → Admin email.
 
@@ -67,7 +67,7 @@ AWS CloudTrail records audit logs.
 - **AWS KMS & AWS Secrets Manager:** Secure cryptographic keys and API tokens.
 - **Amazon SNS:** Broadcasts automated email alerts to administrators upon detecting anomalies.
 - **AWS EventBridge:** Triggers the AI anomaly detection Lambda function every 5 minutes.
-- **Amazon ECS Fargate, Amazon ECR & Application Load Balancer:** Run the Spring Boot backend (API, authentication, playback tokens, FFmpeg transcoding) as a container without server administration.
+- **Amazon ECS Fargate, Amazon ECR & Application Load Balancer:** Run the Spring Boot backend (API, authentication, playback tokens, MeiaConvert transcoding) as a container without server administration.
 - **Amazon RDS for PostgreSQL:** Stores course, chapter and lesson data.
 - **Amazon S3:** Stores raw videos, encrypted HLS, the static frontend and the AI model.
 - **Amazon CloudFront, AWS WAF, Amazon Route 53 & AWS Certificate Manager:** Deliver the frontend/API over HTTPS, protect the edge and manage the domain.
@@ -78,7 +78,7 @@ AWS CloudTrail records audit logs.
 | **Reliability** | ALB across 2 AZs with health checks; ECS restarts failed tasks; RDS automated backups for 7 days; S3 durability of 11 nines (99.999999999%). RDS can be upgraded to Multi-AZ and ECS to 2 tasks in production. | Amazon ECS, ALB, RDS, S3 |
 | **Operational Excellence** | Centralized logs with CloudWatch Logs and CloudTrail; automatic anomaly alerts through Amazon SNS; backend packaged as a Docker image in ECR and redeployed with a single ECS service update. | Amazon CloudWatch, AWS CloudTrail, SNS, ECR |
 | **Performance Efficiency** | Frontend cached at CloudFront edge locations; ECS Fargate scales by task count; video segments downloaded directly from S3 without passing through the backend; DynamoDB on-demand scales automatically. | Amazon CloudFront, ECS Fargate, S3, DynamoDB |
-| **Cost Optimization** | Pay-as-you-go; no DRM licensing and no paid transcoding service (FFmpeg in the container); no NAT Gateway; AWS Free Tier credits and always-free services (Lambda, DynamoDB, SNS, EventBridge); ECS/RDS turned off outside working hours. | AWS Free Tier, ECS Fargate, Lambda, DynamoDB |
+| **Cost Optimization** | Pay-as-you-go; no DRM licensing and no paid transcoding service; no NAT Gateway; AWS Free Tier credits and always-free services (Lambda, DynamoDB, SNS, EventBridge); ECS/RDS turned off outside working hours. | AWS Free Tier, ECS Fargate, Lambda, DynamoDB |
 | **Sustainability** | Shared AWS managed infrastructure; Fargate provisions only the CPU/RAM needed; the AI Lambda runs only a few seconds every 5 minutes; lifecycle rules delete leftover raw videos. | AWS Fargate, Lambda, S3 Lifecycle |
 
 ### 4. Technical Implementation
@@ -88,7 +88,7 @@ AWS CloudTrail records audit logs.
 
 **Implementation Phases:**
 - **Week 1-3:** Study Cognito, ECS Fargate, RDS, S3, KMS; design the AWS architecture; set up accounts, the VPC and the dev environment (Spring Boot, React, Docker).
-- **Week 4-6:** Create the S3 bucket and the presigned-URL upload flow; write VideoProcessingService using FFmpeg for HLS transcoding + AES-128 encryption; build a basic React player with hls.js.
+- **Week 4-6:** Create the S3 bucket and the presigned-URL upload flow; write VideoProcessingService using MediaConvert for HLS transcoding + AES-128 encryption; build a basic React player with hls.js.
 - **Week 7-8:** Build the playback-token API, manifest rewriting, key delivery and segment redirects; integrate Cognito (sign-up, OTP, sign-in, groups); package with Docker and deploy to ECS Fargate + ALB + RDS; configure CloudFront and AWS WAF.
 - **Week 9-10:** Test the token lifecycle; write AccessLog to DynamoDB; train the Isolation Forest model (locally) and serialize it to a .pkl file on S3 (models/ prefix); write the Anomaly Detection Lambda; create a 5-minute EventBridge Scheduler; integrate CloudWatch + SNS; develop the dynamic watermark.
 - **Week 11:** Integrate the dynamic watermark and device fingerprint into the video player; build the leak-tracing tool; internal security testing (pen-test, API authorization checks); cost optimization and AWS Budgets review.
@@ -107,7 +107,7 @@ Estimated total infrastructure cost is about ~$165 USD/month running 24/7 in the
 *Note: Actual costs vary based on usage, region, pricing plans, and AWS Free Tier eligibility.*
 
 **Infrastructure Cost Breakdown:**
-- **Amazon ECS Fargate:** ~$93 (1 task 2 vCPU / 4 GB + 50 GB ephemeral storage for FFmpeg)
+- **Amazon ECS Fargate:** ~$93 (1 task 2 vCPU / 4 GB + 50 GB ephemeral storage)
 - **Application Load Balancer:** ~$23 (1 ALB, low traffic)
 - **Amazon RDS for PostgreSQL:** ~$21 (db.t4g.micro Single-AZ + 20 GB gp3)
 - **Amazon Cognito:** $0.00 (User Pool authentication)
@@ -129,7 +129,7 @@ Estimated total infrastructure cost is about ~$165 USD/month running 24/7 in the
 
 ### 7. Risk Assessment
 **Risk Matrix & Mitigation Strategies:**
-- **Long video transcoding exceeding timeouts (Medium impact, medium probability):** The /upload/process API runs synchronously while CloudFront waits at most 60 seconds. Demo with short videos; the improvement is background processing (return 202 and poll the status) or moving FFmpeg to a separate ECS task.
+- **Long video transcoding exceeding timeouts (Medium impact, medium probability):** The /upload/process API runs synchronously while CloudFront waits at most 60 seconds. Demo with short videos; the improvement is background processing (return 202 and poll the status).
 - **AWS  lacks full native DRM (High impact, low probability):** Clearly define scope around secure video access, anti-sharing, and traceability. Enable `requireSignedURLs`, short-lived tokens, and watermarks. MVP does not equal Widevine/PlayReady/FairPlay.
 - **Signed Token leakage or incorrect expiration (Medium impact, medium probability):** Set short TTLs (1 hour), limit concurrent device sessions, and combine with AI anomaly detection.
 - **AI model false-positive predictions (Medium impact, medium probability):** Start with Isolation Forest, tune contamination thresholds properly, and log false-positives for periodic retraining.
