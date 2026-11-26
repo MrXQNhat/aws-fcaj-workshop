@@ -1,119 +1,115 @@
 ---
-title: "Lambda License Service"
-date: 2026-03-01
+title: "AI Anomaly Detection Lambda"
+date: 2026-11-01
 weight: 2
 chapter: false
 pre: " <b> 5.3.2. </b> "
 ---
 
-### Step 1: Create Lambda License Service
+### Step 1: Create Lambda AnomalyDetection
 1. Go to **AWS Lambda** > **Create event function**.
 ![](image.png)
-2. Select **Author from scratch** > **Function name:** `SecureLearn-LicenseService`
+2. Select **Author from scratch** > **Function name:** SecureLearn-AnomalyDetection 
+`
 3. **Runtime:** Select **Node.js 20.x** / **Python 3.12**.
 ![](image-1.png)
 4. **Custom settings / Additional settings**: Leave as default
 5. Click Create function.
 ![](image-2.png)
 
+6. Code to load an AI model, read logs (simulated), detect anomalies, and send alerts via SNS. (The Isolation Forest model (.pkl file) and libraries such as scikit-learn, numpy, and scipy must be packaged into a Lambda Layer—installed within the `python/lib/python3.12/site-packages/` directory and compressed as a ZIP file.)
+```python
+import os, json, pickle, datetime as dt
+from collections import defaultdict
 
-6. In the Code tab, delete the sample code and paste the following Node.js code (This code is used to check DynamoDB and create HMAC-SHA256 signature):
-```js
-import { DynamoDBClient, GetItemCommand } from "@aws-sdk/client-dynamodb";
-import { SecretsManagerClient, GetSecretValueCommand } from "@aws-sdk/client-secrets-manager";
-import crypto from "crypto";
+import boto3
+from boto3.dynamodb.conditions import Key
 
-const dynamoClient = new DynamoDBClient({});
-const secretsClient = new SecretsManagerClient({});
+TABLE = boto3.resource("dynamodb").Table(os.environ["TABLE_NAME"])
+S3 = boto3.client("s3")
+SNS = boto3.client("sns")
+WINDOW_MINUTES = 5
+_model = None
 
-export const handler = async (event) => {
-    try {
-        // 1. Lấy videoId từ đường dẫn API (ví dụ: /video/123/token)
-        const videoId = event.pathParameters?.id;
-        if (!videoId) return { statusCode: 400, body: JSON.stringify({ error: "Missing video ID" }) };
 
-        // 2. Lấy userId từ token Cognito (API Gateway đã xác thực)
-        const claims = event.requestContext?.authorizer?.jwt?.claims;
-        const userId = claims?.sub || claims?.["cognito:username"];
-        if (!userId) return { statusCode: 401, body: JSON.stringify({ error: "Unauthorized" }) };
+def load_model():
+    # 1. Tải model.pkl từ S3 (giữ trong bộ nhớ giữa các lần gọi)
+    global _model
+    if _model is None:
+        obj = S3.get_object(Bucket=os.environ["MODEL_BUCKET"], Key=os.environ["MODEL_KEY"])
+        _model = pickle.loads(obj["Body"].read())
+    return _model
 
-        // 3. Kiểm tra quyền xem video trong DynamoDB
-        const dbParams = {
-            TableName: process.env.DYNAMODB_TABLE_NAME,
-            Key: { 
-                userId: { S: userId }, 
-                videoId: { S: videoId } 
-            }
-        };
-        const dbResult = await dynamoClient.send(new GetItemCommand(dbParams));
-        
-        // Nếu không có quyền trong DB thì chặn
-        if (!dbResult.Item) {
-            return { statusCode: 403, body: JSON.stringify({ error: "Access Denied. You do not have permission to view this video." }) };
+
+def fetch_logs():
+    # 2. Query GSI LogInADay lấy log 5 phút gần nhất (query cả 2 ngày nếu vắt qua nửa đêm)
+    now = dt.datetime.now(dt.timezone.utc)
+    start = now - dt.timedelta(minutes=WINDOW_MINUTES)
+    items = []
+    for day in sorted({start.strftime("%Y-%m-%d"), now.strftime("%Y-%m-%d")}):
+        kwargs = {
+            "IndexName": os.environ["GSI_NAME"],
+            "KeyConditionExpression": Key("day").eq(day)
+            & Key("timestamp").between(start.isoformat(), now.isoformat()),
         }
+        while True:
+            resp = TABLE.query(**kwargs)
+            items.extend(resp["Items"])
+            if "LastEvaluatedKey" not in resp:
+                break
+            kwargs["ExclusiveStartKey"] = resp["LastEvaluatedKey"]
+    return items
 
-        // 4. Lấy Secret Key từ AWS Secrets Manager
-        const secretParams = { SecretId: process.env.CLOUDFLARE_API_TOKEN_SECRET_NAME };
-        const secretResult = await secretsClient.send(new GetSecretValueCommand(secretParams));
-        const secretData = JSON.parse(secretResult.SecretString);
-        const signingKey = secretData.CDN_SIGNING_SECRET; // Key dùng chung với Cloudflare Worker
 
-        // 5. Tạo chữ ký (HMAC-SHA256) có thời hạn 1 giờ
-        const expiresAt = Math.floor(Date.now() / 1000) + 3600; 
-        const payload = `${videoId}:${expiresAt}`;
-        const signature = crypto.createHmac('sha256', signingKey).update(payload).digest('hex');
+def build_features(items):
+    # 3. Đặc trưng theo từng tài khoản (thứ tự phải giống lúc huấn luyện):
+    #    [số request, số IP, số thiết bị, số bài học, số request KEY]
+    acc = defaultdict(lambda: {"n": 0, "ips": set(), "fps": set(), "lessons": set(), "keys": 0})
+    for it in items:
+        a = acc[it["username"]]
+        a["n"] += 1
+        a["ips"].add(it.get("ip"))
+        a["fps"].add(it.get("fingerprint"))
+        a["lessons"].add(it.get("lessonId"))
+        if it.get("action") == "KEY":
+            a["keys"] += 1
+    users = list(acc)
+    X = [[acc[u]["n"], len(acc[u]["ips"]), len(acc[u]["fps"]),
+          len(acc[u]["lessons"]), acc[u]["keys"]] for u in users]
+    return users, X
 
-        // 6. Trả token về cho Client
-        return {
-            statusCode: 200,
-            headers: { "Access-Control-Allow-Origin": "*" },
-            body: JSON.stringify({ 
-                videoId: videoId,
-                token: `${signature}:${expiresAt}`, 
-                expiresAt 
-            })
-        };
-    } catch (error) {
-        console.error(error);
-        return { statusCode: 500, body: JSON.stringify({ error: "Internal Server Error" }) };
-    }
-}; 
+
+def lambda_handler(event, context):
+    items = fetch_logs()
+    if not items:
+        return {"scanned": 0, "flagged": 0}
+
+    users, X = build_features(items)
+    preds = load_model().predict(X)  # -1 = bất thường, 1 = bình thường
+    flagged = [
+        {"username": u, "requests": x[0], "distinct_ips": x[1],
+         "distinct_devices": x[2], "distinct_lessons": x[3], "key_requests": x[4]}
+        for u, x, p in zip(users, X, preds) if p == -1
+    ]
+
+    # 4. Nếu phát hiện bất thường, gửi cảnh báo qua SNS
+    if flagged:
+        SNS.publish(
+            TopicArn=os.environ["SNS_TOPIC_ARN"],
+            Subject="[SecureLearn] AI Anomaly Alert",
+            Message=json.dumps(flagged, ensure_ascii=False, indent=2),
+        )
+    return {"scanned": len(users), "flagged": len(flagged)}
 ```
-![](image-3.png)
+![](image-16.png)
 
 7. Click Deploy.
 
 8. Configure environment variables: Go to Configuration > Environment variables > Edit, and add the following two variables:
+GSI_NAME: LogInADay
+MODEL_BUCKET: securelearn-media-<account-id> (tạo ở mục 5.4.1).
+MODEL_KEY: models/model.pkl
+SNS_TOPIC_ARN: ARN của SNS Topic SecureLearn-Alerts (sẽ tạo ở mục 5.3.5).
 
-* DYNAMODB_TABLE_NAME: SecureLearn-AccessPermissions
+9. Vào Configuration > General configuration > Edit: Memory 1024 MB, Timeout 1 min.
 
-* CLOUDFLARE_API_TOKEN_SECRET_NAME: SecureLearn/CloudflareCredentials (to be created in a later step).
-![](image-4.png)
-
-### Step 2: Create an HTTP API Gateway & JWT Authorizer
-1. Navigate to **Amazon API Gateway** > **Create API** > **HTTP API** > **Build**.
-![](image-5.png)
-2. **API name:** `SecureLearn-API` > **IP address type:** `IPv4` > Click **Next**.
-![](image-6.png)
-3. **Integrations:** Click **Add integration** > Lambda > **AWS Region:** us-east-1 > **Lambda function:** select the newly created license Lambda function > **Version:** 2 > Click **Next**.
-![](image-7.png)
-4. **Configure Route:**
-* **Method:** `GET`
-* **Path:** `/video/{id}/token`
-* **Integration target:** The `SecureLearn-LicenseService` Lambda function.
-![](image-8.png)
-
-5. Keep the `$default` stage with **Auto-deploy** enabled, then click **Create**.
-![](image-9.png)
-
-6. **Attach a JWT Authorizer:**
-* Go to **Authorization** > **Manage authorizers** > **Create**. 
-![](image-10.png) 
-* **Name:** `CognitoAuthorizer` 
-* **Type:** `JWT` 
-* **Issuer URL:** `https://us-east-1ngbokcb38.auth.us-east-1.amazoncognito.com` 
-* **Audience:** `1ts3buhe230pqn3ldfdv90qj7f`
-![](image-11.png)
-
-7. **Attach Authorizer:** Go back to Routes, select GET /video/{id}/token > Attach authorization > select CognitoAuthorizer.
-![](image-12.png)

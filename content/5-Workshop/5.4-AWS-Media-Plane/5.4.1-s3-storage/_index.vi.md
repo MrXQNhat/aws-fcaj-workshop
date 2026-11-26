@@ -15,10 +15,12 @@ pre: " <b> 5.4.1. </b> "
 4. **Default encryption:** Chọn **SSE-KMS** > chọn khóa `SecureLearn-Key` (mục 5.3.4) > **Bucket Key:** Enable.
 5. Nhấn **Create bucket**.
 ![](image-2.png)
-Bucket dùng các thư mục (prefix) sau, backend và Lambda tự tạo khi ghi file:
+Luồng backend hiện tại sử dụng các prefix sau:
 * `videos/{courseId}/`: video gốc giảng viên upload, bị backend xóa sau khi xử lý xong.
 * `hls/{courseId}/{tên-bài}/`: `master.m3u8`, `content.key` (khóa AES-128 16 byte) và các `segment_XXX.ts` đã mã hóa của từng bài học.
 * `models/`: file `model.pkl` của Lambda AI.
+
+Bài thực hành MediaConvert tùy chọn ở mục 5.4.4 ghi HLS không mã hóa AES-128 vào `mediaconvert-output/{courseId}/{tên-bài}/`. S3 vẫn mã hóa dữ liệu lưu trữ bằng SSE-KMS theo cấu hình mặc định của bucket. Backend phát video hiện tại không sử dụng prefix riêng này.
 
 ### Bước 2: Cấu hình CORS
 Trình duyệt PUT video gốc (presigned URL 15 phút) và tải segment sau khi backend trả `302` (presigned URL 60 giây) trực tiếp từ S3, nên bucket phải cho phép CORS.

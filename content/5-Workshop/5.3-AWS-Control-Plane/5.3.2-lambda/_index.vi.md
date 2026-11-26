@@ -1,5 +1,5 @@
 ---
-title: "Lambda License Service"
+title: "Lambda phát hiện bất thường bằng AI"
 date: 2026-11-01
 weight: 2
 chapter: false

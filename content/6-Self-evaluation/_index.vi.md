@@ -7,31 +7,31 @@ pre: " <b> 6. </b> "
 ---
 
 
-Trong suốt thời gian thực tập tại **[Tên công ty/tổ chức]** từ **[ngày bắt đầu]** đến **[ngày kết thúc]**, tôi đã có cơ hội học hỏi, rèn luyện và áp dụng kiến thức đã được trang bị tại trường vào môi trường làm việc thực tế.  
-Tôi đã tham gia **[mô tả ngắn gọn dự án hoặc công việc chính]**, qua đó cải thiện kỹ năng **[liệt kê kỹ năng: lập trình, phân tích, viết báo cáo, giao tiếp…]**.  
+Trong kỳ thực tập tại **Công ty TNHH Amazon Web Services Viet Nam** từ **14/09/2026 đến 14/12/2026**, tôi có cơ hội trải nghiệm môi trường làm việc thực tế và vận dụng những kiến thức đã học vào công việc.
+Trong quá trình tham gia **Triển khai drm bảo vệ quyền sở hữu trí tuệ cho các bài học video trên các nền tảng**, tôi có thêm cơ hội phát triển các kỹ năng **lập trình, phân tích, viết báo cáo, giao tiếp…**.
 
-Về tác phong, tôi luôn cố gắng hoàn thành tốt nhiệm vụ, tuân thủ nội quy, và tích cực trao đổi với đồng nghiệp để nâng cao hiệu quả công việc.
+Tôi luôn nỗ lực hoàn thành nhiệm vụ được giao, thực hiện theo quy định nơi làm việc và phối hợp với đồng nghiệp để xử lý công việc hiệu quả hơn.
 
-Để phản ánh một cách khách quan quá trình thực tập, tôi xin tự đánh giá bản thân dựa trên các tiêu chí dưới đây:
+Nhìn lại quá trình thực tập, tôi tự đánh giá kết quả và tác phong của mình theo những tiêu chí sau:
 
 
 | STT | Tiêu chí                            | Mô tả                                                                                            | Tốt | Khá | Trung bình |
 | --- | ----------------------------------- | ------------------------------------------------------------------------------------------------ | --- | --- | ---------- |
-| 1   | **Kiến thức và kỹ năng chuyên môn** | Hiểu biết về ngành, áp dụng kiến thức vào thực tế, kỹ năng sử dụng công cụ, chất lượng công việc | ✅   | ☐   | ☐          |
-| 2   | **Khả năng học hỏi**                | Tiếp thu kiến thức mới, học hỏi nhanh                                                            | ☐   | ✅   | ☐          |
-| 3   | **Chủ động**                        | Tự tìm hiểu, nhận nhiệm vụ mà không chờ chỉ dẫn                                                  | ✅   | ☐   | ☐          |
-| 4   | **Tinh thần trách nhiệm**           | Hoàn thành công việc đúng hạn, đảm bảo chất lượng                                                | ✅   | ☐   | ☐          |
-| 5   | **Kỷ luật**                         | Tuân thủ giờ giấc, nội quy, quy trình làm việc                                                   | ☐   | ☐   | ✅          |
-| 6   | **Tính cầu tiến**                   | Sẵn sàng nhận feedback và cải thiện bản thân                                                     | ☐   | ✅   | ☐          |
-| 7   | **Giao tiếp**                       | Trình bày ý tưởng, báo cáo công việc rõ ràng                                                     | ☐   | ✅   | ☐          |
-| 8   | **Hợp tác nhóm**                    | Làm việc hiệu quả với đồng nghiệp, tham gia nhóm                                                 | ✅   | ☐   | ☐          |
-| 9   | **Ứng xử chuyên nghiệp**            | Tôn trọng đồng nghiệp, đối tác, môi trường làm việc                                              | ✅   | ☐   | ☐          |
-| 10  | **Tư duy giải quyết vấn đề**        | Nhận diện vấn đề, đề xuất giải pháp, sáng tạo                                                    | ☐   | ✅   | ☐          |
-| 11  | **Đóng góp vào dự án/tổ chức**      | Hiệu quả công việc, sáng kiến cải tiến, ghi nhận từ team                                         | ✅   | ☐   | ☐          |
-| 12  | **Tổng thể**                        | Đánh giá chung về toàn bộ quá trình thực tập                                                     | ✅   | ☐   | ☐          |
+| 1   | **Kiến thức và kỹ năng chuyên môn** | Nắm kiến thức lĩnh vực, vận dụng vào nhiệm vụ, sử dụng công cụ và đảm bảo chất lượng đầu ra      | ✅   | ☐   | ☐          |
+| 2   | **Khả năng học hỏi**                | Chủ động tiếp nhận nội dung mới và vận dụng sau khi được hướng dẫn                               | ☐   | ✅   | ☐          |
+| 3   | **Chủ động**                        | Tự tìm hiểu yêu cầu và bắt tay thực hiện công việc được giao                                     | ✅   | ☐   | ☐          |
+| 4   | **Tinh thần trách nhiệm**           | Theo sát tiến độ và hoàn thành nhiệm vụ với kết quả phù hợp                                      | ✅   | ☐   | ☐          |
+| 5   | **Kỷ luật**                         | Duy trì giờ giấc, thực hiện quy định và làm theo quy trình                                        | ☐   | ☐   | ✅          |
+| 6   | **Tính cầu tiến**                   | Tiếp nhận nhận xét và áp dụng để điều chỉnh cách làm                                             | ☐   | ✅   | ☐          |
+| 7   | **Giao tiếp**                       | Trao đổi thông tin và cập nhật tiến độ công việc dễ hiểu                                         | ☐   | ✅   | ☐          |
+| 8   | **Hợp tác nhóm**                    | Phối hợp với các thành viên để hoàn thành mục tiêu chung                                         | ✅   | ☐   | ☐          |
+| 9   | **Ứng xử chuyên nghiệp**            | Giữ thái độ tôn trọng, phù hợp với đồng nghiệp và môi trường làm việc                             | ✅   | ☐   | ☐          |
+| 10  | **Tư duy giải quyết vấn đề**        | Phân tích tình huống, xác định nguyên nhân và cân nhắc hướng xử lý                               | ☐   | ✅   | ☐          |
+| 11  | **Đóng góp vào dự án/tổ chức**      | Hoàn thành phần việc và đóng góp vào kết quả chung của nhóm                                      | ✅   | ☐   | ☐          |
+| 12  | **Tổng thể**                        | Nhìn nhận chung về kết quả và trải nghiệm trong kỳ thực tập                                      | ✅   | ☐   | ☐          |
 
 ### Cần cải thiện
 
-* Nâng cao tính kỹ luật, chấp hành nghiêm chỉnh nội quy của công ty hoặc bất kỳ trong một tổ chức nào
-* Cải thiện trong cách tư duy giải quyết vấn đề
-* Học cách giao tiếp tốt hơn trong giao tiếp hằng ngày và trong công việc, xử lý tình huống
+* Rèn luyện tính kỷ luật và duy trì việc tuân thủ quy định trong môi trường làm việc
+* Phát triển phương pháp phân tích vấn đề có hệ thống trước khi lựa chọn giải pháp
+* Cải thiện cách diễn đạt trong trao đổi hằng ngày, cập nhật công việc và xử lý tình huống

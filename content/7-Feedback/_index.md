@@ -6,42 +6,39 @@ chapter: false
 pre: " <b> 7. </b> "
 ---
 
-{{% notice warning %}}
-⚠️ **Note:** The information below is for reference purposes only. Please **do not copy verbatim** for your report, including this warning.
-{{% /notice %}}
 
 > Here, you can freely share your personal opinions about your experience participating in the First Cloud AI Journey program. This will help the FCAJ team improve any shortcomings based on the following aspects:
 
 ### Overall Evaluation
 
 **1. Working Environment**  
-The working environment is very friendly and open. FCAJ members are always willing to help whenever I encounter difficulties, even outside working hours. The workspace is tidy and comfortable, helping me focus better. However, I think it would be nice to have more social gatherings or team bonding activities to strengthen relationships.
+The team created a welcoming environment where I felt comfortable sharing ideas and asking for help. Regular discussions helped me stay informed and work more effectively with others. Overall, I felt included and appreciated the opportunity to collaborate with the FCAJ team.
 
 **2. Support from Mentor / Team Admin**  
-The mentor provides very detailed guidance, explains clearly when I don’t understand, and always encourages me to ask questions. The admin team supports administrative tasks, provides necessary documents, and creates favorable conditions for me to work effectively. I especially appreciate that the mentor allows me to try and solve problems myself instead of just giving the answer.
+My mentor guided me through problem-solving and encouraged me to explore possible solutions independently. Their feedback helped me understand what I had done well and where I could improve. The admin team also provided the information and resources I needed throughout the program.
 
 **3. Relevance of Work to Academic Major**  
-The tasks I was assigned align well with the knowledge I learned at university, while also introducing me to new areas I had never encountered before. This allowed me to both strengthen my foundational knowledge and gain practical skills.
+The assigned tasks connected well with my academic background while introducing tools and workflows used in a professional setting. Applying what I had learned to practical tasks helped me strengthen my foundation and better understand how the concepts are used at work.
 
 **4. Learning & Skill Development Opportunities**  
-During the internship, I learned many new skills such as using project management tools, teamwork skills, and professional communication in a corporate environment. The mentor also shared valuable real-world experiences that helped me better plan my career path.
+During the internship, I improved my research, time-management, and communication skills. I also became more confident in receiving feedback, breaking down complex tasks, and working through challenges. These experiences gave me a clearer understanding of the skills needed for my future career.
 
 **5. Company Culture & Team Spirit**  
-The company culture is very positive: everyone respects each other, works seriously but still keeps things enjoyable. When there are urgent projects, everyone works together and supports one another regardless of their position. This made me feel like a real part of the team, even as an intern.
+The team culture was respectful and collaborative. Members were willing to share their knowledge and support one another when challenges came up. Working with the team helped me feel included and gave me valuable experience collaborating in a professional environment.
 
 **6. Internship Policies / Benefits**  
-The company provides an internship allowance and offers flexible working hours when needed. In addition, having the opportunity to join internal training sessions is a big plus.
+The program schedule and expectations were communicated clearly, which helped me plan my time and stay focused on my responsibilities. I also valued the internal learning sessions and the opportunity to learn from people with different areas of expertise.
 
 ---
 
-### Additional Questions
-- What did you find **most satisfying** during your internship?  
-- What do you think the company **should improve** for future interns?  
-- If recommending to a friend, would you **suggest they intern here**? Why or why not?  
+### Personal Reflections
+- The most rewarding part of the internship was contributing to practical tasks and seeing how my work connected to the team's goals.
+- I especially valued the guidance from my mentor and the chance to take ownership of solving problems.
+- I would recommend the program to students looking to gain practical experience and learn about a professional work environment.
 
 ---
 
 ### Suggestions & Expectations
-- Do you have any suggestions to improve the internship experience?  
-- Would you like to continue this program in the future?  
-- Any other comments (free sharing):
+- Regular check-ins would help interns share progress, discuss challenges, and receive feedback throughout the program.
+- More opportunities to work on a variety of tasks would provide a broader view of the team's workflow.
+- Overall, the internship was a valuable experience that helped me grow in knowledge, skills, and professional confidence.

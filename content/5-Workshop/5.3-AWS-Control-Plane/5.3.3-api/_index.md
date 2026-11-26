@@ -1,5 +1,5 @@
 ---
-title: "API Gateway"
+title: "Spring Boot Backend on ECS"
 date: 2026-11-01
 weight: 2
 chapter: false
@@ -8,7 +8,7 @@ pre: " <b> 5.3.3. </b> "
 
 
 
-The Spring Boot backend serves the whole `/api/v1/*` API and runs on ECS Fargate behind an Application Load Balancer. Spring Boot does its own routing, validates Cognito JWTs itself (`oauth2ResourceServer`) and authorizes by group, so API Gateway is not needed.
+The Spring Boot backend serves the whole `/api/v1/*` API and runs on ECS Fargate behind an Application Load Balancer. Spring Boot handles routing, validates Cognito JWTs (`oauth2ResourceServer`), and authorizes by group.
 
 ### Step 1: Create the VPC & Security Groups
 1. Go to **VPC** (region `ap-southeast-1`) > **Create VPC** > select **VPC and more**.
@@ -108,5 +108,7 @@ Go to **IAM** > **Roles** > **Create role** > **AWS service** > **Elastic Contai
 * **GET** `.../manifest`, `.../key`, `.../segment/{n}`: return the rewritten manifest, the AES-128 key, and a 302 redirect to a 60-second S3 presigned URL.
 * **POST** `/api/v1/upload/presign`, `/api/v1/upload/process` (INSTRUCTOR/ADMIN): request an upload URL (15-minute TTL) and ask FFmpeg to process the video.
 * **/api/v1/admin/***: user management (ADMIN only once authorization is fixed, see section 5.4.3).
+
+> The optional MediaConvert job in [section 5.4.4](../../5.4-AWS-Media-Plane/5.4.4-mediaconvert/) is a separate test flow. The current upload endpoint does not submit MediaConvert jobs; keep its output in `mediaconvert-output/` and do not overwrite the encrypted `hls/` files.
 
 > `/upload/process` currently runs synchronously, and CloudFront waits at most 60 seconds, so long videos report a timeout even though the backend finishes processing. Use short videos for demos, or change the code to return `202` and process in the background.

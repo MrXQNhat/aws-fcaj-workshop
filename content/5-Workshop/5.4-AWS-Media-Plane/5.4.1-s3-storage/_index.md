@@ -16,10 +16,12 @@ pre: " <b> 5.4.1. </b> "
 5. Click **Create bucket**.
 ![](image-2.png)
 
-The bucket uses these prefixes, created automatically by the backend and the Lambda:
+The active backend workflow uses these prefixes:
 * `videos/{courseId}/`: raw videos uploaded by instructors, deleted by the backend after processing.
 * `hls/{courseId}/{lesson-name}/`: `master.m3u8`, `content.key` (16-byte AES-128 key) and each lesson's encrypted `segment_XXX.ts` files.
 * `models/`: the AI Lambda's `model.pkl`.
+
+The optional MediaConvert exercise in section 5.4.4 writes HLS without AES-128 media encryption to `mediaconvert-output/{courseId}/{lesson-name}/`. S3 still applies the bucket's default SSE-KMS encryption at rest. This separate prefix is not used by the current playback backend.
 
 ### Step 2: Configure CORS
 The browser PUTs the raw video (15-minute presigned URL) and downloads segments after the backend's `302` (60-second presigned URL) directly from S3, so the bucket must allow CORS.

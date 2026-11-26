@@ -8,14 +8,11 @@ chapter: false
     
 # Internship Report
 
-{{% notice warning %}}
-⚠️ **Note:** The information below is for reference purposes only. Please **do not copy verbatim** for your report, including this warning.
-{{% /notice %}}
 
 ### Student Information:
 &emsp; **Full Name:** Thai Vo Quang Nhat
 
-&emsp; **Phone Number:** 0989888999 
+&emsp; **Phone Number:** 0325538653
 
 &emsp; **Email:** nhatthai24102006@gmail.com
 
@@ -23,16 +20,15 @@ chapter: false
 
 &emsp; **Major:** Information Assurance
 
-&emsp; **Class:** AWS092026
+&emsp; **Class:** Rito3077
 
 &emsp; **Internship Company:** Amazon Web Services Viet Nam Company Limited
 
 &emsp; **Internship Position:** Workforce Bootcamp - First Cloud AI Journey
 
-&emsp; **Internship Duration:** From 14/09/2026 to 21/12/2026
+&emsp; **Internship Duration:** From 14/09/2026 to 14/12/2026
 
-![Your profile picture](/images/avatar.png)
-
+![](z7771209960542_1c28668d3db502d9f988a21a52db6ad3.jpg)
 ### Report Content
 
 1.  [Worklog](1-Worklog/)

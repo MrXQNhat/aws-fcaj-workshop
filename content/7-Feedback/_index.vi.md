@@ -12,31 +12,29 @@ pre: " <b> 7. </b> "
 ### Đánh giá chung
 
 **1. Môi trường làm việc**  
-Môi trường làm việc rất thân thiện và cởi mở. Các thành viên trong FCAJ luôn sẵn sàng hỗ trợ khi mình gặp khó khăn, kể cả ngoài giờ làm việc. Không gian làm việc gọn gàng, thoải mái, giúp mình tập trung tốt hơn. Tuy nhiên, mình nghĩ có thể bổ sung thêm một số buổi giao lưu hoặc team bonding để mọi người hiểu nhau hơn.
+Mình cảm thấy thoải mái khi trao đổi ý tưởng và nhờ mọi người hỗ trợ trong quá trình làm việc. Các buổi trao đổi nhóm giúp mình nắm được tiến độ chung, dù đôi khi lịch họp khá dày. Có thể chia sẻ trước nội dung cần chuẩn bị để các buổi họp tập trung và hiệu quả hơn.
 
 **2. Sự hỗ trợ của mentor / team admin**  
-Mentor hướng dẫn rất chi tiết, giải thích rõ ràng khi mình chưa hiểu và luôn khuyến khích mình đặt câu hỏi. Team admin hỗ trợ các thủ tục, tài liệu và tạo điều kiện để mình làm việc thuận lợi. Mình đánh giá cao việc mentor cho phép mình thử và tự xử lý vấn đề thay vì chỉ đưa đáp án.
+Mentor thường gợi ý hướng tiếp cận và cùng mình xem lại kết quả sau mỗi nhiệm vụ, nhờ đó mình hiểu rõ hơn cách áp dụng kiến thức. Tài liệu và thông tin từ team admin cũng được cung cấp kịp thời. Mình mong có thêm các buổi trao đổi ngắn định kỳ để cập nhật tiến độ và tháo gỡ vướng mắc sớm.
 
 **3. Sự phù hợp giữa công việc và chuyên ngành học**  
-Công việc mình được giao phù hợp với kiến thức mình đã học ở trường, đồng thời mở rộng thêm những mảng mới mà mình chưa từng được tiếp cận. Nhờ vậy, mình vừa củng cố kiến thức nền tảng, vừa học thêm kỹ năng thực tế.
+Các nhiệm vụ có liên hệ với kiến thức chuyên ngành, đồng thời giúp mình làm quen với những công cụ và quy trình mới. Ban đầu mình cần thời gian để kết nối kiến thức lý thuyết với yêu cầu thực tế, nhưng việc được tham gia vào từng bước triển khai đã giúp mình hiểu vấn đề rõ hơn.
 
 **4. Cơ hội học hỏi & phát triển kỹ năng**  
-Trong quá trình thực tập, mình học được nhiều kỹ năng mới như sử dụng công cụ quản lý dự án, kỹ năng làm việc nhóm, và cả cách giao tiếp chuyên nghiệp trong môi trường công ty. Mentor cũng chia sẻ nhiều kinh nghiệm thực tế giúp mình định hướng tốt hơn cho sự nghiệp.
+Chương trình giúp mình cải thiện kỹ năng tự học, quản lý thời gian và trình bày kết quả công việc. Mình cũng học được cách tiếp nhận góp ý, xử lý vấn đề theo từng bước và kiên trì thử nghiệm khi gặp khó khăn. Đây là những kinh nghiệm hữu ích cho định hướng nghề nghiệp sau này.
 
 **5. Văn hóa & tinh thần đồng đội**  
-Văn hóa công ty rất tích cực: mọi người tôn trọng lẫn nhau, làm việc nghiêm túc nhưng vẫn vui vẻ. Khi có dự án gấp, mọi người cùng nhau cố gắng, hỗ trợ không phân biệt vị trí. Điều này giúp mình cảm thấy mình là một phần của tập thể, dù chỉ là thực tập sinh.
+Mọi người trao đổi cởi mở và sẵn lòng chia sẻ kinh nghiệm, tạo cảm giác dễ hòa nhập với nhóm. Khi phối hợp làm việc, việc thống nhất mục tiêu và phân chia nhiệm vụ rõ ràng giúp cả nhóm tiến triển tốt hơn. Những hoạt động giao lưu không chính thức cũng sẽ giúp các thành viên kết nối thêm.
 
 **6. Chính sách / phúc lợi cho thực tập sinh**  
-Công ty có hỗ trợ phụ cấp thực tập và tạo điều kiện về thời gian linh hoạt khi cần thiết. Ngoài ra, việc được tham gia các buổi đào tạo nội bộ là một điểm cộng lớn.
+Thông tin về lịch làm việc và các quyền lợi được phổ biến khá rõ, giúp mình chủ động sắp xếp thời gian. Mình mong các thông báo liên quan đến lịch đào tạo hoặc thay đổi kế hoạch được cập nhật tập trung để tiện theo dõi.
 
-
-### Một số câu hỏi khác
-- Điều bạn **hài lòng nhất** trong thời gian thực tập?  
-- Điều bạn nghĩ công ty **cần cải thiện** cho các thực tập sinh sau?  
-- Nếu giới thiệu cho bạn bè, bạn có **khuyên họ thực tập ở đây không**? Vì sao?  
-
+### Cảm nhận cá nhân
+- Trải nghiệm đáng nhớ nhất của mình là được tham gia vào các nhiệm vụ thực tế và nhìn thấy kết quả từ những gì đã học.
+- Mình hài lòng với sự hỗ trợ của mentor và cơ hội được chủ động tìm cách giải quyết vấn đề.
+- Mình sẵn sàng giới thiệu chương trình này đến những bạn muốn tích lũy kinh nghiệm và tìm hiểu môi trường làm việc thực tế.
 
 ### Đề xuất & mong muốn
-- Bạn có đề xuất gì để cải thiện trải nghiệm trong kỳ thực tập?  
-- Bạn có muốn tiếp tục chương trình này trong tương lai?
-- Góp ý khác (tự do chia sẻ):
+- Mình mong chương trình tiếp tục duy trì các buổi hướng dẫn và trao đổi định kỳ để thực tập sinh cập nhật tiến độ, chia sẻ khó khăn.
+- Mình muốn có thêm cơ hội tham gia các nhiệm vụ đa dạng để hiểu rõ hơn quy trình làm việc và ứng dụng kiến thức vào thực tế.
+- Nhìn chung, đây là một kỳ thực tập bổ ích, giúp mình trưởng thành hơn về kiến thức, kỹ năng và tác phong làm việc.

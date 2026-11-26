@@ -12,19 +12,23 @@ AWS WAF replaces Cloudflare WAF and Cloudflare Zero Trust. The admin UI is the `
 1. Go to **AWS WAF & Shield** > **IP sets** > region **Global (CloudFront)** > **Create IP set**.
 2. **Name:** `securelearn-admin-allowlist` > **IP version:** IPv4.
 3. **IP addresses:** the admin machine's public IP as `/32` (e.g. `203.0.113.10/32`) > **Create IP set**.
+![](image.png)
 
 ### Step 2: Create the Web ACL
 1. **Web ACLs** > **Create web ACL** > **Resource type:** Amazon CloudFront distributions > **Name:** `securelearn-waf`.
 2. **Add AWS resources:** select the SecureLearn distribution.
+![](image-1.png)
 3. **Add managed rule groups:** enable `Core rule set`, `Known bad inputs`, `Amazon IP reputation list`.
 4. **Add my own rules** > **Rule builder**:
    * **Name:** `admin-ip-allowlist` > **If a request:** matches all the statements (AND).
    * **Statement 1:** URI path > **Starts with string** > `/api/v1/admin` (create a similar rule for `/api/v1/ai`).
    * **Statement 2:** **Negate** > Originates from an IP address in > `securelearn-admin-allowlist`.
    * **Action:** Block > **Add rule**.
+![](image-2.png)
 5. **Add my own rules** > **Rate-based rule:** `auth-rate-limit`, limit `100` requests / 5 minutes / IP, **Scope-down:** URI path starts with `/api/v1/auth/` (against password and OTP guessing), Action Block.
 6. **Add my own rules** > **Rate-based rule:** `rate-limit-per-ip`, limit `2000` requests / 5 minutes, Action Block. A learner watching a video generates about 50 segment requests every 5 minutes, so this threshold does not affect normal users.
 7. **Rule priority:** `admin-ip-allowlist` first > **Default action:** Allow > **Create web ACL**.
+![](image-3.png)
 
 ### Step 3: Test
 1. From an IP **not** in the allow-list, call `https://learn.yourdomain.com/api/v1/admin/user` > `403` from WAF.

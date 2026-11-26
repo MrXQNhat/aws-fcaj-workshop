@@ -15,7 +15,7 @@ pre: " <b> 5.3.4. </b> "
 ![](image.png)
 
 6. **Alias / Mô tả:** `SecureLearn-Key`.
-7. Chỉ định quyền quản trị và quyền sử dụng khóa cho IAM Role của Lambda, sau đó nhấn **Finish**.
+7. Chỉ định quyền quản trị khóa; cấp quyền sử dụng khóa cho ECS execution role để đọc secret đã mã hóa và ECS task role để mã hóa/giải mã video thông qua IAM policy, sau đó nhấn **Finish**.
 ![](image-1.png)
 
 ![](image-2.png)
@@ -36,5 +36,5 @@ Khóa này mã hóa secret ở Bước 2 và bucket video (SSE-KMS, mục 5.4.1)
 ![](image-4.png)
 6. **Secret name:** `SecureLearn/be`.
 ![](image-5.png)
-7. Ghi lại **Secret ARN** để khai báo trong task definition (mục 5.3.3, Bước 7), và đảm bảo `securelearn-ecs-execution-role` có đủ quyền `kms:Decrypt` và `secretsmanager:GetSecretValue`.
+7. Ghi lại **Secret ARN** để khai báo trong task definition (mục 5.3.3, Bước 6), và đảm bảo `securelearn-ecs-execution-role` có đủ quyền `kms:Decrypt` và `secretsmanager:GetSecretValue`.
 ![](image-6.png)

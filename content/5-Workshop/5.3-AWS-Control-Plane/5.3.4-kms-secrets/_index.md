@@ -14,8 +14,8 @@ pre: " <b> 5.3.4. </b> "
 5. **Regionality:** Select **Single-Region key**.
 ![](image.png)
 
-4. **Alias ​​/ Description:** `SecureLearn-Key`.
-5. Assign key administration to your IAM user/role. Key usage for the ECS task (section 5.3.3) and the Lambda (section 5.3.2) is granted through each role's IAM policy; then click **Finish**.
+6. **Alias / Description:** `SecureLearn-Key`.
+7. Assign key administration to your IAM user/role. Grant key usage to the ECS execution role for reading the encrypted secret and to the ECS task role for video encryption/decryption, using IAM policies; then click **Finish**.
 ![](image-1.png)
 
 ![](image-2.png)
@@ -36,5 +36,5 @@ This key encrypts the secret in Step 2 and the video bucket (SSE-KMS, section 5.
 ![](image-4.png)
 6. **Secret name:** `SecureLearn/be`.
 ![](image-5.png)
-7. Click **Store**, note the **Secret ARN** for the task definition (section 5.3.3, Step 7), and make sure `securelearn-ecs-execution-role` has `kms:Decrypt` and `secretsmanager:GetSecretValue`.
+7. Click **Store**, note the **Secret ARN** for the task definition (section 5.3.3, Step 6), and make sure `securelearn-ecs-execution-role` has `kms:Decrypt` and `secretsmanager:GetSecretValue`.
 ![](image-6.png)

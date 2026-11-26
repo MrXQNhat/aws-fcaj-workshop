@@ -8,7 +8,12 @@ pre: " <b> 5. </b> "
 
 # SecureLearn: Hệ Thống Bảo Vệ Nội Dung Số Dành Cho Nền Tảng Giáo Dục
 
-Trong bài thực hành (workshop) này, bạn sẽ xây dựng **SecureLearn**, giải pháp bảo vệ nội dung video chi phí thấp dành cho các trung tâm đào tạo vừa và nhỏ (SMEs). Kiến trúc sử dụng mô hình **Hybrid Serverless** kết hợp giữa **AWS** (đảm nhiệm xác thực, phân quyền, chuyển mã video, phát hiện bất thường bằng AI và logic nghiệp vụ) với **Cloudflare** (đảm nhiệm lưu trữ giao diện, lưu trữ object, xác thực token tại biên và phân phối CDN miễn phí băng thông egress).
+Trong workshop này, bạn sẽ xây dựng **SecureLearn**, một giải pháp bảo vệ nội dung video với chi phí hợp lý dành cho các trung tâm giáo dục vừa và nhỏ (SMEs). Toàn bộ hệ thống chạy trên **AWS**:
+
+* Backend Spring Boot chạy trên ECS Fargate phía sau Application Load Balancer. Backend xử lý xác thực thông qua Cognito, cấp token phát video, đồng thời chuyển mã và mã hóa video HLS AES-128 bằng FFmpeg.
+* Dữ liệu được lưu trữ trong RDS for PostgreSQL, DynamoDB và S3.
+* Frontend ReactJS được phân phối qua CloudFront và bảo vệ bằng AWS WAF.
+* Hệ thống phát hiện bất thường bằng AI chạy trên Lambda (container image trên ECR), được kích hoạt bởi DynamoDB Stream và EventBridge.
 
 ### Nội dung Workshop
 
@@ -16,11 +21,14 @@ Trong bài thực hành (workshop) này, bạn sẽ xây dựng **SecureLearn**,
 2. [Các bước chuẩn bị (Prerequisites)](5.2-Prerequiste/)
 3. [Triển khai Control Plane trên AWS](5.3-AWS-Control-Plane/)
    - [Amazon Cognito User Pool](5.3.1-cognito/)
-   - [Lambda License Service & API Gateway](5.3.2-api-lambda/)
-   - [AWS KMS & Secrets Manager](5.3.3-kms-secrets/)
+   - [Lambda phát hiện bất thường bằng AI](5.3.2-lambda/)
+   - [Backend Spring Boot trên ECS](5.3.3-api/)
+   - [AWS KMS & Secrets Manager](5.3.4-kms-secrets/)
+   - [Cảnh báo qua SNS & EventBridge](5.3.5-sns-eventbridge/)
 4. [Triển khai AWS Media Plane](5.4-AWS-Media-Plane/)
    - [S3 storage](5.4.1-s3-storage/)
-   - [Cloudfont](5.4.2-cloudfont/)
+   - [CloudFront](5.4.2-cloudfront/)
    - [WAF](5.4.3-waf/)
-5. [Hệ thống Giám sát AI & Cảnh báo](5.5-AI-Monitoring/)
-6. [Dọn dẹp tài nguyên (Clean Up)](5.6-Cleanup/)
+   - [AWS Elemental MediaConvert](5.4.4-mediaconvert/)
+5. [Hệ thống giám sát và cảnh báo bằng AI](5.5-AI-Monitoring/)
+6. [Dọn dẹp tài nguyên](5.6-Cleanup/)

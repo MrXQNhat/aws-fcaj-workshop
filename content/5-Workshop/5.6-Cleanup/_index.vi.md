@@ -10,17 +10,18 @@ Sau khi hoàn thành bài thực hành và quay video demo báo cáo, hãy tiế
 
 ### 1. Dọn dẹp Tài nguyên trên AWS
 1. AWS WAF & CloudFront (us-east-1 / Global): Bỏ liên kết và xóa Web ACL securelearn-waf, IP set securelearn-admin-allowlist; Disable rồi Delete distribution, xóa CloudFront Function securelearn-spa-rewrite.
-2. Amazon ECS & ECR: Đặt desired count của securelearn-backend-svc về 0, xóa service, cluster securelearn-cluster, deregister task definition securelearn-backend và xóa repository securelearn-backend.
+2. Amazon ECS & ECR: Đặt desired count của securelearn-backend-svc về 0, xóa service, cluster securelearn-cluster, deregister task definition securelearn-backend và xóa repository `securelearn-backend`.
 3. Elastic Load Balancing & ACM: Xóa securelearn-alb, target group securelearn-backend-tg, sau đó xóa chứng chỉ ACM ở cả ap-southeast-1 (ALB) và us-east-1 (CloudFront).
 4. Amazon RDS: Xóa securelearn-db (bỏ chọn final snapshot nếu không cần giữ dữ liệu) và subnet group securelearn-db-subnets.
-5. Amazon DynamoDB: Xóa bảng AccessLog.
-6. Amazon S3: Làm rỗng và xóa các bucket securelearn-media-<account-id>, securelearn-web-<account-id>.
+5. Amazon DynamoDB: Xóa bảng `AnomalyAlert`; chỉ xóa bảng `AccessLog` sau khi đã dừng backend và không còn cần dữ liệu.
+6. Amazon S3: Làm rỗng và xóa các bucket `securelearn-media-<account-id>`, `securelearn-web-<account-id>` và `securelearn-models-<account-id>`.
 7. AWS Secrets Manager & KMS: Xóa secret securelearn/backend và đặt lịch xóa khóa SecureLearn-Key (thời gian chờ tối thiểu 7 ngày), chỉ sau khi đã xóa bucket video.
 8. Amazon Cognito: Xóa User Pool SecureLearn.
 9. Route 53: Xóa bản ghi learn, origin và các bản ghi xác thực ACM.
 10. Amazon VPC: Xóa securelearn-vpc (kèm subnet, Security Group và S3 Gateway endpoint).
-11. IAM: Xóa các role securelearn-ecs-execution-role, securelearn-ecs-task-role.
-12. Amazon CloudWatch & CloudTrail: Xóa thủ công các Log Group còn sót lại do ECS tạo ra; xóa trail securelearn-trail nếu đã tạo.
+11. AWS Lambda, EventBridge, SNS & ECR: Xóa event-source mapping và Lambda function, rule EventBridge `securelearn-anomaly-every-5min` cùng target, SNS topic `securelearn-anomaly-alerts` và repository ECR `securelearn-anomaly`.
+12. IAM: Xóa các role `securelearn-ecs-execution-role`, `securelearn-ecs-task-role` và `securelearn-anomaly-lambda-role`.
+13. Amazon CloudWatch & CloudTrail: Xóa thủ công các log group ECS và Lambda còn sót lại; xóa trail `securelearn-trail` nếu đã tạo.
 
 ```powershell
 aws events remove-targets --rule securelearn-anomaly-every-5min --ids 1 --region $REGION

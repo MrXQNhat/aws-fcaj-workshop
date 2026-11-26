@@ -1,5 +1,5 @@
 ---
-title: "API Gateway"
+title: "Backend Spring Boot trên ECS"
 date: 2026-11-01
 weight: 2
 chapter: false
@@ -7,8 +7,7 @@ pre: " <b> 5.3.3. </b> "
 ---
 
 
-Backend Spring Boot cung cấp toàn bộ API `/api/v1/*`, chạy trong ECS Fargate phía sau Application Load Balancer. Spring Boot tự định tuyến, tự kiểm tra JWT của Cognito (`oauth2ResourceServer`) và tự phân quyền theo nhóm, không cần API Gateway.
-
+Backend Spring Boot cung cấp toàn bộ API `/api/v1/*`, chạy trong ECS Fargate phía sau Application Load Balancer. Spring Boot xử lý định tuyến, kiểm tra JWT của Cognito (`oauth2ResourceServer`) và phân quyền theo nhóm.
 ### Bước 1: Tạo VPC & Security Group
 1. Truy cập **VPC** (region `ap-southeast-1`) > **Create VPC** > chọn **VPC and more**.
 2. **Name tag:** `securelearn` > **IPv4 CIDR:** `10.0.0.0/16` > **Number of AZs:** `2` > **Public subnets:** `2` > **Private subnets:** `2` > **NAT gateways:** `None` > **VPC endpoints:** `S3 Gateway` > Nhấn **Create VPC**.
