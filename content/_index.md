@@ -20,7 +20,7 @@ chapter: false
 
 &emsp; **Major:** Information Assurance
 
-&emsp; **Class:** Rito3077
+&emsp; **Class:** FCAJ-FPT-Season 4 
 
 &emsp; **Internship Company:** Amazon Web Services Viet Nam Company Limited
 
