@@ -20,7 +20,7 @@ pre: " <b> 4. </b> "
 > * Việc liệt kê này giúp thể hiện rõ sự tham gia thực tế của bạn, cũng như các kỹ năng mềm và kinh nghiệm bạn đã tích lũy qua từng sự kiện.
 
 
-Trong quá trình thực tập, em đã tham gia 2 events, với mỗi event là một trải nghiệm đáng nhớ với những kiến thức mới, hay và bổ ích, cùng với đó là nhứng món quà và những khoảnh khắc rất tuyệt vời.
+Trong quá trình thực tập, em đã tham gia 4 sự kiện, mỗi sự kiện là một trải nghiệm đáng nhớ với nhiều kiến thức mới và bổ ích.
 
 ### [Event 1](4.1-Event1/)
 &emsp;**Tên sự kiện:** Buildrathon Kickoff: Code the Future with CMC Global
@@ -60,3 +60,16 @@ Trong quá trình thực tập, em đã tham gia 2 events, với mỗi event là
 &emsp;**Description:** Khám phá các bài học từ việc xây dựng software factory, nền tảng học tập lấy chứng chỉ cloud, hàm web AWS Lambda đa luồng, hệ thống bất đồng bộ Amazon SQS, hành trình dự án thực tập 3 tháng và đóng góp mã nguồn mở.  
 
 &emsp;**Outcomes & Value Gained:** Nắm vững kỹ thuật tối ưu serverless, hiểu các pattern hàng đợi tin nhắn bất đồng bộ, khám phá tài nguyên học chứng chỉ uy tín (AWS Skill Builder) và thu thập kinh nghiệm dự án thực tập thực tế.
+
+### [Event 4](4.4-Event4/)
+&emsp;**Tên sự kiện:** Navigating the Future of Cloud & AI in Vietnam – Key Takeaways from Amazon CTO Werner Vogels
+
+&emsp;**Thời gian:** 09:00 ngày 26/10/2026
+
+&emsp;**Địa điểm:** Tầng 26, tòa nhà Bitexco, số 02 đường Hải Triều, phường Sài Gòn, thành phố Hồ Chí Minh
+
+&emsp;**Vai trò trong sự kiện:** Người tham dự
+
+&emsp;**Mô tả:** Lắng nghe Dr. Werner Vogels chia sẻ về bài học thiết kế Dynamo dựa trên mô hình truy vấn thực tế, đo lường P99.9, khả năng chịu lỗi, GameDays, năng lực của “Renaissance Developer” và vai trò của AI trong phát triển phần mềm.
+
+&emsp;**Kết quả & Giá trị đạt được:** Hiểu rõ hơn cách lựa chọn kiến trúc dựa trên hành vi sử dụng, kiểm thử khả năng phục hồi, phát triển tư duy hệ thống và sử dụng AI có trách nhiệm.
