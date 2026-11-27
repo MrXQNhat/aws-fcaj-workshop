@@ -17,7 +17,7 @@ chapter: false
 
 &emsp; **Ngành:** An toàn thông tin
 
-&emsp; **Lớp:** Rito3077
+&emsp; **Lớp:** FCAJ-FPT-Season 4 
 
 &emsp; **Công ty thực tập:** Công ty TNHH Amazon Web Services Viet Nam
 
